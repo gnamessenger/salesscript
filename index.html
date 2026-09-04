@@ -3,350 +3,436 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>고가상품 세일즈 화법 - 왜 그 사람 앞에서는 지갑이 열릴까</title>
-<meta name="description" content="1:1 컨설팅 770만원에 판매된 실전 세일즈 대본. 1차 니즈파악부터 2차 클로징까지, 그대로 읽기만 해도 되는 화법을 사전예약가 79,000원에 만나보세요.">
+<title>고가상품 세일즈 화법 완전정복</title>
+<meta name="description" content="1:1 컨설팅 770만원에 판매된 실전 세일즈 대본. 1차 니즈파악부터 2차 클로징까지, 그대로 읽기만 해도 되는 화법.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
 <style>
   :root{
-    --bg:#0c0a13;
-    --bg2:#151220;
-    --card:#1a1628;
-    --mint:#5EEAD4;
+    --navy:#14213D;
+    --navy2:#1E2E52;
+    --text:#1A1A2E;
+    --text-dim:#6b7280;
+    --border:#e6e8ef;
+    --bg-soft:#f7f8fb;
     --purple:#7A5AF8;
-    --text:#e8e2f5;
-    --text-dim:#9a92b3;
+    --red:#e0435c;
     --gold:#F5C451;
-    --danger:#ff6b8a;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{
     font-family:'Pretendard','Apple SD Gothic Neo',sans-serif;
-    background:var(--bg);
+    background:#fff;
     color:var(--text);
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
   }
   img{max-width:100%;display:block;}
-  .wrap{max-width:640px;margin:0 auto;padding:0 20px;}
-  section{padding:64px 0;}
+  .wrap{max-width:600px;margin:0 auto;padding:0 20px;}
+  img,svg{max-width:100%;}
 
-  /* HERO */
-  .hero{
-    padding:72px 0 56px;
-    text-align:center;
-    background:radial-gradient(ellipse at top, rgba(122,90,248,.25), transparent 60%);
+  /* HEADER (seller strip) */
+  .seller-bar{
+    padding:16px 0;
+    border-bottom:1px solid var(--border);
   }
-  .hero .badge{
-    display:inline-block;
-    background:rgba(94,234,212,.12);
-    border:1px solid rgba(94,234,212,.4);
-    color:var(--mint);
+  .seller-bar .wrap{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .seller-bar .logo{
+    width:32px;height:32px;border-radius:8px;
+    background:var(--navy);
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:800;font-size:14px;
+  }
+  .seller-bar .name{font-weight:700;font-size:15px;color:var(--navy);}
+
+  /* COVER CARD */
+  .cover-section{padding:28px 0 0;}
+  .cover-card{
+    background:var(--bg-soft);
+    border-radius:18px;
+    padding:24px;
+    display:flex;
+    gap:16px;
+    align-items:center;
+  }
+  .cover-card .left{flex:1;}
+  .cover-card .left h2{
+    font-size:17px;
+    font-weight:800;
+    color:var(--navy);
+    line-height:1.4;
+    margin-bottom:14px;
+  }
+  .cover-check{
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
     font-size:13px;
-    font-weight:600;
-    padding:6px 14px;
-    border-radius:20px;
-    margin-bottom:20px;
-  }
-  .hero h1{
-    font-size:34px;
-    font-weight:900;
-    line-height:1.35;
-    letter-spacing:-.5px;
-  }
-  .hero h1 .hl{color:var(--mint);}
-  .hero .sub{
-    margin-top:18px;
-    font-size:16px;
-    color:var(--text-dim);
+    color:#3a3f52;
+    margin-bottom:9px;
     font-weight:500;
   }
-  .hero .proof{
-    margin-top:32px;
-    background:var(--card);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:16px;
-    padding:20px;
-    text-align:left;
-  }
-  .hero .proof-num{
-    font-size:28px;
+  .cover-check .ck{
+    color:var(--navy);
     font-weight:900;
-    color:var(--gold);
-  }
-  .hero .proof-label{
-    font-size:13px;
-    color:var(--text-dim);
-    margin-top:2px;
-  }
-  .proof-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center;}
-
-  /* PAIN */
-  .pain h2{
-    font-size:24px;
-    font-weight:800;
-    text-align:center;
-    line-height:1.5;
-  }
-  .pain h2 .hl{color:var(--danger);}
-  .pain-list{margin-top:32px;display:flex;flex-direction:column;gap:14px;}
-  .pain-item{
-    background:var(--card);
-    border-radius:14px;
-    padding:18px 20px;
-    display:flex;
-    gap:14px;
-    align-items:flex-start;
-    border:1px solid rgba(255,255,255,.06);
-  }
-  .pain-item .icon{font-size:22px;flex-shrink:0;}
-  .pain-item .txt{font-size:15px;color:var(--text);}
-  .pain-item .txt b{color:#fff;}
-
-  /* QUOTE / INSIGHT */
-  .insight{background:var(--bg2);}
-  .insight h2{
-    font-size:22px;
-    font-weight:800;
-    text-align:center;
-    margin-bottom:36px;
-  }
-  .quote-card{
-    background:linear-gradient(135deg, rgba(122,90,248,.15), rgba(94,234,212,.08));
-    border:1px solid rgba(122,90,248,.35);
-    border-radius:16px;
-    padding:26px 24px;
-    margin-bottom:16px;
-  }
-  .quote-card .q{
-    font-size:16px;
-    font-weight:700;
-    color:#fff;
-    line-height:1.55;
-  }
-  .quote-card .q .mint{color:var(--mint);}
-  .quote-card .src{
-    margin-top:10px;
-    font-size:12.5px;
-    color:var(--text-dim);
-  }
-
-  /* PRODUCT */
-  .product h2{
-    font-size:26px;
-    font-weight:900;
-    text-align:center;
-    line-height:1.4;
-  }
-  .product .sub{
-    text-align:center;
-    color:var(--text-dim);
-    margin-top:10px;
-    font-size:15px;
-  }
-  .cover{
-    margin-top:32px;
-    background:linear-gradient(160deg,#1e1a30,#0c0a13);
-    border:1px solid rgba(122,90,248,.4);
-    border-radius:20px;
-    padding:32px 24px;
-    text-align:center;
-  }
-  .cover .kicker{color:var(--mint);font-weight:700;font-size:13px;letter-spacing:.5px;}
-  .cover .title{
-    font-size:24px;
-    font-weight:900;
-    margin-top:10px;
-    line-height:1.4;
-    color:#fff;
-  }
-  .checklist{
-    margin-top:36px;
-    display:flex;
-    flex-direction:column;
-    gap:14px;
-  }
-  .check-item{
-    display:flex;
-    gap:12px;
-    align-items:flex-start;
-    background:var(--card);
-    border-radius:12px;
-    padding:16px 18px;
-    border:1px solid rgba(255,255,255,.06);
-  }
-  .check-item .mark{
-    color:var(--mint);
-    font-weight:900;
-    font-size:18px;
     flex-shrink:0;
   }
-  .check-item .txt{font-size:15px;font-weight:600;color:#fff;}
-
-  /* BONUS */
-  .bonus{
-    margin-top:40px;
-    background:linear-gradient(135deg,#2a1f0f,#1a1628);
-    border:1px solid rgba(245,196,81,.5);
-    border-radius:18px;
-    padding:26px 22px;
+  .cover-card .right{
+    width:118px;
+    flex-shrink:0;
   }
-  .bonus .tag{
+  .book{
+    background:linear-gradient(160deg,var(--navy),var(--navy2));
+    border-radius:8px;
+    padding:14px 10px;
+    color:#fff;
+    aspect-ratio:3/4.2;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    box-shadow:0 10px 24px rgba(20,33,61,.35);
+  }
+  .book .k{font-size:9.5px;font-weight:700;color:var(--gold);letter-spacing:.3px;}
+  .book .t{font-size:14px;font-weight:900;line-height:1.3;margin-top:6px;}
+
+  /* TITLE / RATING */
+  .title-section{padding:24px 0 0;}
+  .title-section h1{
+    font-size:23px;
+    font-weight:900;
+    color:var(--text);
+    line-height:1.4;
+  }
+  .rating{
+    margin-top:10px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:14px;
+    color:var(--text-dim);
+  }
+  .rating .stars{color:var(--gold);font-weight:700;}
+  .rating .score{font-weight:800;color:var(--text);}
+
+  /* TABS */
+  .tabs{
+    margin-top:22px;
+    display:flex;
+    border-bottom:1px solid var(--border);
+  }
+  .tab{
+    padding:12px 18px 12px 0;
+    margin-right:18px;
+    font-size:15px;
+    font-weight:700;
+    color:var(--text-dim);
+    cursor:pointer;
+  }
+  .tab.active{
+    color:var(--navy);
+    border-bottom:2px solid var(--navy);
+  }
+
+  /* DETAIL BODY */
+  .detail-body{padding:24px 0 8px;}
+  .lead-quote{
+    font-size:17px;
+    font-weight:800;
+    color:var(--navy);
+    line-height:1.5;
+  }
+  .detail-body p{
+    margin-top:14px;
+    font-size:14.5px;
+    color:#3a3f52;
+    line-height:1.7;
+  }
+  .detail-body p b{color:var(--text);}
+
+  .pain-box{
+    margin-top:26px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .pain-row{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-size:14px;
+    color:#3a3f52;
+  }
+  .pain-row .icon{flex-shrink:0;font-size:18px;}
+
+  .insight-card{
+    margin-top:16px;
+    background:var(--bg-soft);
+    border-left:3px solid var(--navy);
+    border-radius:0 12px 12px 0;
+    padding:16px 18px;
+  }
+  .insight-card .q{
+    font-size:14.5px;
+    font-weight:700;
+    color:var(--text);
+    line-height:1.55;
+  }
+  .insight-card .src{
+    margin-top:6px;
+    font-size:12px;
+    color:var(--text-dim);
+  }
+
+  .curriculum{margin-top:28px;}
+  .curriculum h3{
+    font-size:16px;
+    font-weight:800;
+    color:var(--navy);
+    margin-bottom:14px;
+  }
+  .curri-item{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    padding:13px 0;
+    border-bottom:1px solid var(--border);
+    font-size:14px;
+  }
+  .curri-item .num{
+    flex-shrink:0;
+    width:22px;height:22px;
+    border-radius:6px;
+    background:var(--navy);
+    color:#fff;
+    font-size:11px;
+    font-weight:800;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .curri-item .txt b{display:block;color:var(--text);font-weight:700;}
+  .curri-item .txt span{color:var(--text-dim);font-size:12.5px;}
+
+  .bonus-box{
+    margin-top:24px;
+    background:#fff7e6;
+    border:1px solid #f0d59a;
+    border-radius:14px;
+    padding:18px 18px;
+  }
+  .bonus-box .tag{
     display:inline-block;
     background:var(--gold);
-    color:#1a1628;
-    font-size:12px;
+    color:#3a2e00;
+    font-size:11.5px;
     font-weight:800;
-    padding:4px 10px;
+    padding:3px 9px;
     border-radius:6px;
   }
-  .bonus h3{
-    margin-top:12px;
-    font-size:19px;
+  .bonus-box h4{
+    margin-top:10px;
+    font-size:15.5px;
     font-weight:800;
-    color:#fff;
-  }
-  .bonus p{
-    margin-top:8px;
-    font-size:14.5px;
-    color:var(--text-dim);
-  }
-  .bonus .bonus-detail{
-    margin-top:14px;
-    font-size:14px;
     color:var(--text);
   }
+  .bonus-box p{margin-top:6px;font-size:13.5px;color:#5b4d1f;}
 
-  /* PRICE */
-  .price-block{
-    margin-top:40px;
-    text-align:center;
-    background:var(--card);
-    border-radius:18px;
-    padding:30px 24px;
-    border:1px solid rgba(255,255,255,.08);
+  /* REVIEWS TAB */
+  .review-panel{display:none;padding:20px 0 8px;}
+  .review-panel.active{display:block;}
+  .review-item{
+    padding:16px 0;
+    border-bottom:1px solid var(--border);
   }
-  .price-block .original{
+  .review-item .who{
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--text);
+  }
+  .review-item .date{
+    font-size:12px;
     color:var(--text-dim);
-    font-size:15px;
+    margin-left:6px;
+    font-weight:400;
+  }
+  .review-item .stars{color:var(--gold);font-size:12px;margin:4px 0;}
+  .review-item .body{font-size:13.5px;color:#3a3f52;line-height:1.6;}
+
+  /* PRICE CARD */
+  .price-section{padding:30px 0 20px;}
+  .price-card{
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:22px 20px;
+  }
+  .price-card .pname{
+    font-size:16px;
+    font-weight:800;
+    color:var(--text);
+    margin-bottom:14px;
+  }
+  .price-card .original{
+    font-size:14px;
+    color:var(--text-dim);
     text-decoration:line-through;
   }
-  .price-block .discount-tag{
-    display:inline-block;
-    background:rgba(255,107,138,.15);
-    color:var(--danger);
+  .price-final-row{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-top:4px;
+  }
+  .price-final-row .final{
+    font-size:30px;
+    font-weight:900;
+    color:var(--text);
+  }
+  .price-final-row .badge{
+    background:#fdeaec;
+    color:var(--red);
     font-weight:800;
     font-size:13px;
-    padding:3px 10px;
+    padding:3px 9px;
     border-radius:6px;
-    margin:8px 6px;
   }
-  .price-block .final{
-    font-size:38px;
-    font-weight:900;
-    color:#fff;
+  .price-lines{margin-top:18px;}
+  .price-line{
+    display:flex;
+    justify-content:space-between;
+    font-size:13.5px;
+    color:var(--text-dim);
+    padding:8px 0;
+  }
+  .price-line.total{
+    border-top:1px solid var(--border);
     margin-top:6px;
+    padding-top:14px;
+    font-size:15px;
+    font-weight:800;
+    color:var(--text);
   }
-  .price-block .final .won{font-size:20px;color:var(--mint);margin-left:4px;}
-  .price-block .note{
+  .price-line .discount{color:var(--red);font-weight:700;}
+
+  .buy-btn{
+    display:block;
+    width:100%;
+    text-align:center;
+    background:var(--purple);
+    color:#fff;
+    border:none;
+    border-radius:12px;
+    padding:16px;
+    font-size:16px;
+    font-weight:800;
+    font-family:inherit;
+    margin-top:20px;
+    cursor:pointer;
+    text-decoration:none;
+  }
+  .price-note{
+    text-align:center;
     margin-top:10px;
-    font-size:13px;
+    font-size:12px;
     color:var(--text-dim);
   }
 
   /* FORM */
-  .form-section{background:var(--bg2);}
+  .form-section{
+    background:var(--bg-soft);
+    padding:36px 0 44px;
+    margin-top:12px;
+  }
   .form-section h2{
-    font-size:24px;
+    font-size:20px;
     font-weight:900;
     text-align:center;
+    color:var(--text);
     line-height:1.4;
   }
   .form-section .sub{
     text-align:center;
     color:var(--text-dim);
-    margin-top:10px;
-    font-size:14.5px;
+    margin-top:8px;
+    font-size:13.5px;
   }
   .lead-form{
-    margin-top:32px;
-    background:var(--card);
-    border-radius:18px;
-    padding:28px 22px;
-    border:1px solid rgba(255,255,255,.08);
+    margin-top:24px;
+    background:#fff;
+    border-radius:16px;
+    padding:24px 20px;
+    border:1px solid var(--border);
   }
-  .field{margin-bottom:16px;}
+  .field{margin-bottom:14px;}
   .field label{
     display:block;
-    font-size:13.5px;
-    font-weight:600;
+    font-size:13px;
+    font-weight:700;
     color:var(--text);
     margin-bottom:6px;
   }
-  .field label .req{color:var(--danger);}
+  .field label .req{color:var(--red);}
   .field input{
     width:100%;
     background:#fff;
-    color:#1A1A2E;
-    border:1px solid rgba(94,234,212,.5);
+    color:var(--text);
+    border:1px solid var(--border);
     border-radius:8px;
-    padding:13px 14px;
-    font-size:15px;
+    padding:12px 13px;
+    font-size:14.5px;
     font-family:inherit;
   }
-  .field input::placeholder{color:rgba(26,26,46,.4);}
-  .field input:focus{outline:none;border-color:var(--mint);}
+  .field input::placeholder{color:#a9adba;}
+  .field input:focus{outline:none;border-color:var(--navy);}
   .policy{
-    font-size:12.5px;
+    font-size:12px;
     color:var(--text-dim);
     display:flex;
-    gap:8px;
+    gap:7px;
     align-items:flex-start;
-    margin:18px 0;
+    margin:16px 0;
   }
-  .policy input{margin-top:3px;accent-color:var(--mint);}
+  .policy input{margin-top:3px;accent-color:var(--navy);}
   .submit-btn{
     width:100%;
     background:var(--purple);
     color:#fff;
     border:none;
     border-radius:10px;
-    padding:16px;
-    font-size:16px;
+    padding:15px;
+    font-size:15.5px;
     font-weight:800;
     font-family:inherit;
     cursor:pointer;
-    animation:blink 1.6s ease-in-out infinite;
   }
-  @keyframes blink{0%,100%{opacity:1;}50%{opacity:.75;}}
   .submit-btn:active{transform:scale(.98);}
-  .form-result{margin-top:14px;font-size:13.5px;text-align:center;min-height:1em;}
-  .form-result.success{color:var(--mint);font-weight:700;}
-  .form-result.error{color:var(--danger);}
+  .form-result{margin-top:12px;font-size:13px;text-align:center;min-height:1em;}
+  .form-result.success{color:#1a9e6b;font-weight:700;}
 
-  /* FOOTER */
   footer{
-    padding:36px 0 60px;
+    padding:28px 0 80px;
     text-align:center;
     color:var(--text-dim);
-    font-size:12px;
+    font-size:11.5px;
+    line-height:1.7;
   }
 
   .sticky-cta{
     position:fixed;
     bottom:0;left:0;right:0;
-    background:rgba(12,10,19,.92);
-    backdrop-filter:blur(8px);
-    border-top:1px solid rgba(255,255,255,.1);
+    background:#fff;
+    border-top:1px solid var(--border);
     padding:12px 20px;
     display:flex;
     justify-content:center;
     z-index:50;
+    box-shadow:0 -4px 16px rgba(0,0,0,.06);
   }
   .sticky-cta a{
     display:block;
     width:100%;
-    max-width:600px;
+    max-width:560px;
     text-align:center;
     background:var(--purple);
     color:#fff;
@@ -356,118 +442,140 @@
     border-radius:10px;
     text-decoration:none;
   }
-  body{padding-bottom:70px;}
 </style>
 </head>
 <body>
 
-<!-- HERO -->
-<section class="hero">
+<div class="seller-bar">
   <div class="wrap">
-    <span class="badge">사전예약 오픈</span>
-    <h1>왜 그 사람 앞에서는<br><span class="hl">지갑이 열릴까</span></h1>
-    <p class="sub">1:1 컨설팅으로 <b style="color:#fff">770만원</b>에 판매된 그 화법,<br>이제 대본 그대로 당신 것이 됩니다.</p>
+    <div class="logo">S</div>
+    <div class="name">salesscript</div>
+  </div>
+</div>
 
-    <div class="proof">
-      <div class="proof-grid">
-        <div>
-          <div class="proof-num">770만</div>
-          <div class="proof-label">1:1 컨설팅<br>최대 결제액</div>
-        </div>
-        <div>
-          <div class="proof-num">20년</div>
-          <div class="proof-label">세일즈<br>실전 경력</div>
-        </div>
-        <div>
-          <div class="proof-num">1,000+</div>
-          <div class="proof-label">컨설팅·강의<br>진행 횟수</div>
+<!-- COVER -->
+<section class="cover-section">
+  <div class="wrap">
+    <div class="cover-card">
+      <div class="left">
+        <h2>말 한마디로<br>계약을 만드는 시스템</h2>
+        <div class="cover-check"><span class="ck">✓</span><span>니즈파악부터 클로징까지 한 번에</span></div>
+        <div class="cover-check"><span class="ck">✓</span><span>거절은 줄이고 계약은 늘리고</span></div>
+        <div class="cover-check"><span class="ck">✓</span><span>이 화법으로 비즈니스를 확장하세요</span></div>
+      </div>
+      <div class="right">
+        <div class="book">
+          <div class="k">1:1 컨설팅 770만원</div>
+          <div class="t">고가상품<br>세일즈 화법<br>완전정복</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PAIN -->
-<section class="pain">
+<!-- TITLE / RATING -->
+<section class="title-section">
   <div class="wrap">
-    <h2>혹시 지금,<br><span class="hl">이런 벽</span>에 부딪히고 계신가요?</h2>
-    <div class="pain-list">
-      <div class="pain-item">
-        <div class="icon">😓</div>
-        <div class="txt"><b>고가 상품이나 무형의 서비스</b>를 설명하려고만 하면 말이 꼬이고, 고객의 눈빛이 흐려진다.</div>
-      </div>
-      <div class="pain-item">
-        <div class="icon">💸</div>
-        <div class="txt">가격을 말하는 순간 <b>고객의 표정이 굳는 게</b> 느껴지고, 나도 모르게 목소리가 작아진다.</div>
-      </div>
-      <div class="pain-item">
-        <div class="icon">📉</div>
-        <div class="txt">열심히는 하는데 <b>매출은 항상 제자리</b>. 뭐가 문제인지도 정확히 모르겠다.</div>
-      </div>
+    <h1>[대본집] 1:1 컨설팅 770만원<br>고가상품 세일즈 화법</h1>
+    <div class="rating">
+      <span class="stars">★★★★★</span>
+      <span class="score">5.0</span>
+      <span>실전 검증 화법</span>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" data-tab="detail">상세설명</div>
+      <div class="tab" data-tab="review">리뷰</div>
     </div>
   </div>
 </section>
 
-<!-- INSIGHT -->
-<section class="insight">
-  <div class="wrap">
-    <h2>세일즈에 대해<br>당신이 몰랐던 진실</h2>
+<!-- DETAIL PANEL -->
+<div class="wrap">
+  <div class="detail-body" id="panel-detail">
+    <div class="lead-quote">"1:1로 팔면 770만원, 이제 대본 그대로 당신 것이 됩니다."</div>
+    <p>본 대본집은 복잡한 이론을 배제하고, <b>실제 계약으로 이어지는 '실전 화법'</b>만 그대로 담았습니다. 20년 세일즈 경력, 1,000회 이상 컨설팅·강의를 통해 검증된 화법의 핵심을 지금 바로 소유하세요.</p>
 
-    <div class="quote-card">
-      <div class="q">"고객이 영업맨을 <span class="mint">신뢰</span>할 수 있다고 여기게 되는 지점은,<br>십중팔구 <span class="mint">거절당했을 때</span>입니다."</div>
-      <div class="src">거절은 실패가 아니라, 신뢰가 시작되는 지점입니다</div>
+    <div class="pain-box">
+      <div class="pain-row"><span class="icon">😓</span><span>고가 상품이나 무형의 서비스를 설명하려고만 하면 말이 꼬인다</span></div>
+      <div class="pain-row"><span class="icon">💸</span><span>가격을 말하는 순간 고객의 표정이 굳는 게 느껴진다</span></div>
+      <div class="pain-row"><span class="icon">📉</span><span>열심히는 하는데 매출은 항상 제자리다</span></div>
     </div>
 
-    <div class="quote-card">
-      <div class="q">클로징을 많이 쓴 상담은 <span class="mint">11/30건</span> 성공,<br>클로징을 적게 쓴 상담은 <span class="mint">21/30건</span> 성공.<br>고가 제품일수록 클로징을 <b>적게</b> 해야 합니다.</div>
+    <div class="insight-card">
+      <div class="q">"고객이 영업맨을 신뢰할 수 있다고 여기게 되는 지점은, 십중팔구 거절당했을 때입니다."</div>
+      <div class="src">거절은 실패가 아니라 신뢰가 시작되는 지점입니다</div>
+    </div>
+    <div class="insight-card">
+      <div class="q">클로징을 많이 쓴 상담은 11/30건 성공, 적게 쓴 상담은 21/30건 성공 — 고가 제품일수록 클로징을 적게 해야 합니다.</div>
       <div class="src">밀어붙일수록 오히려 멀어지는 것이 고가 세일즈의 역설입니다</div>
     </div>
 
-    <div class="quote-card">
-      <div class="q">고객의 거절은 <span class="mint">절대 6가지를 넘지 않습니다.</span><br>그 6가지를 뚫는 법만 알면, 거절이 더 이상 두렵지 않습니다.</div>
-      <div class="src">패턴을 알면 대응할 수 있습니다</div>
+    <div class="curriculum">
+      <h3>대본집 구성</h3>
+      <div class="curri-item">
+        <div class="num">1</div>
+        <div class="txt"><b>1차 미팅 대본 — 니즈파악</b><span>첫 만남 3초부터 라포 형성, 질문법, 약속잡기까지</span></div>
+      </div>
+      <div class="curri-item">
+        <div class="num">2</div>
+        <div class="txt"><b>2차 미팅 대본 — 클로징</b><span>상품제안부터 계약 체결까지, 그대로 읽는 완성형 스크립트</span></div>
+      </div>
+    </div>
+
+    <div class="bonus-box">
+      <span class="tag">사전예약 특별 보너스</span>
+      <h4>🎁 마법의 반론 제기</h4>
+      <p>"생각해볼게요", "돈이 없어요" — 고객이 어떤 말로 거절하든 바로 꺼내 쓰는 반론처리 스크립트 40개 이상. 사전예약자 전원에게 무료로 함께 드립니다.</p>
     </div>
   </div>
-</section>
 
-<!-- PRODUCT -->
-<section class="product">
+  <div class="review-panel" id="panel-review">
+    <div class="review-item">
+      <span class="who">김**<span class="date">2026-08-12</span></span>
+      <div class="stars">★★★★★</div>
+      <div class="body">막연했던 세일즈 화법을 대본으로 받으니 확실히 다릅니다. 왜 거절당하는지, 어떻게 대응해야 하는지 명확해졌어요.</div>
+    </div>
+    <div class="review-item">
+      <span class="who">이**<span class="date">2026-08-20</span></span>
+      <div class="stars">★★★★★</div>
+      <div class="body">1차, 2차 대본이 이어지는 흐름이라 실제 미팅에서 그대로 따라 하기 좋았습니다. 반론 처리 보너스까지 알차네요.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICE -->
+<section class="price-section">
   <div class="wrap">
-    <h2>실전 미팅 그대로,<br>대본으로 만들었습니다</h2>
-    <p class="sub">니즈파악부터 계약 클로징까지 — 읽기만 해도 되는 화법</p>
-
-    <div class="cover">
-      <div class="kicker">고가상품 세일즈 화법 완전정복</div>
-      <div class="title">1차 미팅 대본 + 2차 미팅 대본<br>통합 패키지</div>
-    </div>
-
-    <div class="checklist">
-      <div class="check-item">
-        <div class="mark">✓</div>
-        <div class="txt">첫 만남 3초부터 니즈파악·계약 클로징까지, 그대로 읽기만 해도 되는 실전 대본</div>
-      </div>
-      <div class="check-item">
-        <div class="mark">✓</div>
-        <div class="txt">가격 저항을 무너뜨리는 앵커링·비교급·최상급 심리 화법 총정리</div>
-      </div>
-      <div class="check-item">
-        <div class="mark">✓</div>
-        <div class="txt">실제 계약으로 이어진 라포 형성·질문법·클로징 스크립트 원문 그대로 공개</div>
-      </div>
-    </div>
-
-    <div class="bonus">
-      <span class="tag">사전예약 특별 보너스</span>
-      <h3>🎁 마법의 반론 제기</h3>
-      <p>"생각해볼게요", "돈이 없어요", "다음에 할게요" — 고객이 어떤 말로 거절하든, 그 자리에서 바로 꺼내 쓰는 반론처리 스크립트 40개 이상.</p>
-      <div class="bonus-detail">사전예약자 전원에게 정식 오픈 시 <b style="color:#F5C451">무료로</b> 함께 드립니다.</div>
-    </div>
-
-    <div class="price-block">
+    <div class="price-card">
+      <div class="pname">[대본집] 고가상품 세일즈 화법 완전정복</div>
       <div class="original">정가 1,100,000원</div>
-      <span class="discount-tag">93% 할인</span>
-      <div class="final">79,000<span class="won">원</span></div>
-      <div class="note">사전예약 시 정식 오픈가 그대로 잠금 · 보너스 자료 무료 동봉</div>
+      <div class="price-final-row">
+        <div class="final">79,000원</div>
+        <div class="badge">-93%</div>
+      </div>
+
+      <div class="price-lines">
+        <div class="price-line">
+          <span>1차+2차 미팅 대본 통합 패키지</span>
+          <span>1,100,000원</span>
+        </div>
+        <div class="price-line">
+          <span>총 금액</span>
+          <span>1,100,000원</span>
+        </div>
+        <div class="price-line">
+          <span>할인</span>
+          <span class="discount">-93% -1,021,000원</span>
+        </div>
+        <div class="price-line total">
+          <span>최종 구매 금액</span>
+          <span>79,000원</span>
+        </div>
+      </div>
+
+      <a href="#apply" class="buy-btn">구매하기</a>
+      <div class="price-note">사전예약 시 정식 오픈가 그대로 잠금 · 보너스 자료 무료 동봉</div>
     </div>
   </div>
 </section>
@@ -511,6 +619,18 @@
 <div class="sticky-cta">
   <a href="#apply">특가 79,000원으로 사전예약하기</a>
 </div>
+
+<script>
+  document.querySelectorAll('.tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+      tab.classList.add('active');
+      var target = tab.getAttribute('data-tab');
+      document.getElementById('panel-detail').style.display = target === 'detail' ? 'block' : 'none';
+      document.getElementById('panel-review').classList.toggle('active', target === 'review');
+    });
+  });
+</script>
 
 </body>
 </html>
