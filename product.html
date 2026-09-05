@@ -325,6 +325,9 @@
       doPurchaseAndRedirect(user);
       return;
     }
+    if(user.displayName && !document.getElementById('review-name').value){
+      document.getElementById('review-name').value = user.displayName;
+    }
     hasPurchased(user.uid).then(function(purchased){
       currentUserHasPurchased = purchased;
       if(purchased){

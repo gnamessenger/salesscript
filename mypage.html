@@ -50,7 +50,13 @@
     <div class="order-card">
       <div class="pname">기본정보</div>
       <div class="meta" id="info-email">이메일: -</div>
-      <div class="meta" id="info-uid">사용자 ID: -</div>
+    </div>
+    <div class="order-card">
+      <div class="pname">닉네임</div>
+      <div class="meta">리뷰·마이페이지에 표시될 이름을 설정하세요</div>
+      <input type="text" id="nickname-input" class="review-input" placeholder="닉네임을 입력해주세요" maxlength="20" style="margin-top:10px;">
+      <button type="button" class="download-btn" id="nickname-save-btn">닉네임 저장</button>
+      <div class="review-msg" id="nickname-msg"></div>
     </div>
   </div>
 </div>
@@ -121,14 +127,36 @@
     alert('테스트 단계입니다. 정식 오픈 시 이 버튼을 누르면 실제 PDF 파일이 다운로드됩니다.');
   }
 
+  document.getElementById('nickname-save-btn').addEventListener('click', function(){
+    var user = auth.currentUser;
+    var msgEl = document.getElementById('nickname-msg');
+    var nickname = document.getElementById('nickname-input').value.trim();
+    if(!user){ return; }
+    if(!nickname){
+      msgEl.textContent = '닉네임을 입력해주세요.';
+      msgEl.className = 'review-msg error';
+      return;
+    }
+    user.updateProfile({ displayName: nickname }).then(function(){
+      document.getElementById('user-email').textContent = nickname;
+      msgEl.textContent = '닉네임이 저장되었습니다.';
+      msgEl.className = 'review-msg success';
+    }).catch(function(err){
+      msgEl.textContent = '저장에 실패했습니다: ' + err.message;
+      msgEl.className = 'review-msg error';
+    });
+  });
+
   auth.onAuthStateChanged(function(user){
     if(!user){
       window.location.href = 'index.html';
       return;
     }
-    document.getElementById('user-email').textContent = user.email;
+    document.getElementById('user-email').textContent = user.displayName || user.email;
     document.getElementById('info-email').textContent = '이메일: ' + user.email;
-    document.getElementById('info-uid').textContent = '사용자 ID: ' + user.uid;
+    if(user.displayName){
+      document.getElementById('nickname-input').value = user.displayName;
+    }
     document.getElementById('logout-btn').style.display = 'inline-block';
 
     db.collection('orders').where('uid', '==', user.uid).orderBy('createdAt', 'desc').get()
