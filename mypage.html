@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마이페이지 - 고가상품 세일즈 화법</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ 3rd LANDING: MYPAGE ============ -->
+
+<div class="seller-bar">
+  <div class="wrap">
+    <div class="logo">S</div>
+    <div class="name">salesscript</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="mypage-header">
+    <div>
+      <h1 style="font-size:20px;font-weight:900;">마이페이지</h1>
+      <div class="email" id="user-email">로그인 확인 중...</div>
+    </div>
+    <button type="button" class="logout-btn" id="logout-btn" style="display:none;">로그아웃</button>
+  </div>
+
+  <div class="mypage-nav">
+    <div class="active" data-tab="content">내 컨텐츠</div>
+    <div data-tab="orders">구매내역</div>
+    <div data-tab="info">내 정보</div>
+  </div>
+
+  <div id="tab-content">
+    <div id="content-list">
+      <div class="empty-state">불러오는 중...</div>
+    </div>
+  </div>
+
+  <div id="tab-orders" style="display:none;">
+    <div id="orders-list">
+      <div class="empty-state">불러오는 중...</div>
+    </div>
+  </div>
+
+  <div id="tab-info" style="display:none;">
+    <div class="order-card">
+      <div class="pname">기본정보</div>
+      <div class="meta" id="info-email">이메일: -</div>
+      <div class="meta" id="info-uid">사용자 ID: -</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.mypage-nav div').forEach(function(nav){
+    nav.addEventListener('click', function(){
+      document.querySelectorAll('.mypage-nav div').forEach(function(n){n.classList.remove('active');});
+      nav.classList.add('active');
+      var tab = nav.getAttribute('data-tab');
+      document.getElementById('tab-content').style.display = tab === 'content' ? 'block' : 'none';
+      document.getElementById('tab-orders').style.display = tab === 'orders' ? 'block' : 'none';
+      document.getElementById('tab-info').style.display = tab === 'info' ? 'block' : 'none';
+    });
+  });
+</script>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="firebase-init.js"></script>
+<script>
+  document.getElementById('logout-btn').addEventListener('click', function(){
+    auth.signOut().then(function(){
+      window.location.href = 'index.html';
+    });
+  });
+
+  function renderOrders(docs){
+    var ordersEl = document.getElementById('orders-list');
+    var contentEl = document.getElementById('content-list');
+
+    if(docs.length === 0){
+      ordersEl.innerHTML = '<div class="empty-state">구매내역이 없습니다.<br>상품을 구매하시면 여기에 표시됩니다.</div>';
+      contentEl.innerHTML = '<div class="empty-state">보유 중인 컨텐츠가 없습니다.</div>';
+      return;
+    }
+
+    var ordersHtml = '';
+    var contentHtml = '';
+    docs.forEach(function(doc){
+      var d = doc.data();
+      var dateStr = '';
+      if(d.createdAt && d.createdAt.toDate){
+        var dt = d.createdAt.toDate();
+        dateStr = dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + String(dt.getDate()).padStart(2,'0') +
+          ' ' + String(dt.getHours()).padStart(2,'0') + ':' + String(dt.getMinutes()).padStart(2,'0');
+      }
+      ordersHtml += '<div class="order-card">' +
+        '<div class="pname">' + d.productName + '</div>' +
+        '<div class="meta">주문일시: ' + (dateStr || '-') + '</div>' +
+        '<div class="meta">결제금액: ' + (d.amount || 0).toLocaleString() + '원</div>' +
+        '<div class="status">' + (d.status === 'completed' ? '결제완료' : d.status) + '</div>' +
+        '</div>';
+
+      contentHtml += '<div class="order-card">' +
+        '<div class="pname">' + d.productName + '</div>' +
+        '<div class="meta">기간 제한 없음</div>' +
+        '<button type="button" class="download-btn" onclick="handleDownload()">PDF 다운로드</button>' +
+        '</div>';
+    });
+    ordersEl.innerHTML = ordersHtml;
+    contentEl.innerHTML = contentHtml;
+  }
+
+  function handleDownload(){
+    alert('테스트 단계입니다. 정식 오픈 시 이 버튼을 누르면 실제 PDF 파일이 다운로드됩니다.');
+  }
+
+  auth.onAuthStateChanged(function(user){
+    if(!user){
+      window.location.href = 'index.html';
+      return;
+    }
+    document.getElementById('user-email').textContent = user.email;
+    document.getElementById('info-email').textContent = '이메일: ' + user.email;
+    document.getElementById('info-uid').textContent = '사용자 ID: ' + user.uid;
+    document.getElementById('logout-btn').style.display = 'inline-block';
+
+    db.collection('orders').where('uid', '==', user.uid).orderBy('createdAt', 'desc').get()
+      .then(function(snap){
+        renderOrders(snap.docs);
+      })
+      .catch(function(err){
+        console.error(err);
+        document.getElementById('orders-list').innerHTML = '<div class="empty-state">구매내역을 불러오지 못했습니다.</div>';
+        document.getElementById('content-list').innerHTML = '<div class="empty-state">컨텐츠를 불러오지 못했습니다.</div>';
+      });
+  });
+</script>
+
+</body>
+</html>

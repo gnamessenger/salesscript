@@ -98,8 +98,15 @@
   </div>
 
   <div class="review-panel" id="panel-review">
-    <div class="review-write">
-      <h4>후기 남기기</h4>
+    <div id="review-gate">
+      <div class="review-locked">
+        <p>후기는 <b>구매하신 분만</b> 작성할 수 있습니다.</p>
+        <button type="button" id="gate-login-btn">로그인 / 구매하기</button>
+      </div>
+    </div>
+
+    <div class="review-write" id="review-write" style="display:none;">
+      <h4>후기 남기기 <span class="verified-badge">구매인증</span></h4>
       <div class="star-picker" id="star-picker">
         <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
       </div>
@@ -147,13 +154,13 @@
         </div>
       </div>
 
-      <a href="#apply" class="buy-btn">구매하기</a>
-      <div class="price-note">사전예약 시 정식 오픈가 그대로 잠금 · 보너스 자료 무료 동봉</div>
+      <button type="button" id="buy-btn" class="buy-btn">구매하기</button>
+      <div class="price-note">※ 지금은 테스트 단계로, 실제 결제 없이 로그인만으로 구매 흐름을 체험하실 수 있습니다.</div>
     </div>
   </div>
 </section>
 
-<!-- FORM -->
+<!-- FORM (사전예약 리드수집) -->
 <section class="form-section" id="apply">
   <div class="wrap">
     <h2>지금 사전예약하고<br>특가 잠가두세요</h2>
@@ -193,6 +200,40 @@
   <a href="#apply">특가 79,000원으로 사전예약하기</a>
 </div>
 
+<!-- AUTH MODAL -->
+<div class="auth-overlay" id="auth-overlay">
+  <div class="auth-modal">
+    <div class="auth-close" id="auth-close">✕</div>
+    <h3>로그인하고 계속하기</h3>
+    <p class="sub">구매 처리와 구매인증 후기를 위해 로그인이 필요합니다</p>
+
+    <button type="button" class="google-btn" id="google-login-btn">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.4 29.3 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.3 1 7.3 2.7l6-6C33.5 6.5 29 4.5 24 4.5 13.2 4.5 4.5 13.2 4.5 24S13.2 43.5 24 43.5 43.5 34.8 43.5 24c0-1.2-.1-2.4-.3-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 16 19 13 24 13c2.8 0 5.3 1 7.3 2.7l6-6C33.5 6.5 29 4.5 24 4.5c-7.6 0-14.1 4.3-17.4 10.6z"/><path fill="#4CAF50" d="M24 43.5c5.2 0 9.9-1.7 13.5-4.8l-6.2-5.3C29.3 35 26.8 36 24 36c-5.2 0-9.6-2.6-11.3-7l-6.6 5.1C9.8 39 16.4 43.5 24 43.5z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.5l6.2 5.3C40.5 36.5 43.5 30.7 43.5 24c0-1.2-.1-2.4-.3-3.5z"/></svg>
+      Google로 계속하기
+    </button>
+
+    <div class="auth-divider">또는 이메일로</div>
+
+    <div class="auth-tabs">
+      <div class="auth-tab active" data-mode="login">로그인</div>
+      <div class="auth-tab" data-mode="signup">회원가입</div>
+    </div>
+
+    <div class="field">
+      <label>이메일</label>
+      <input type="email" id="auth-email" class="review-input" placeholder="example@email.com">
+    </div>
+    <div class="field">
+      <label>비밀번호</label>
+      <input type="password" id="auth-password" class="review-input" placeholder="6자 이상">
+    </div>
+    <button type="button" class="auth-submit-btn" id="auth-submit-btn">로그인하기</button>
+    <div class="auth-msg" id="auth-msg"></div>
+  </div>
+</div>
+
+<div class="page-loading" id="page-loading">처리 중...</div>
+
 <script>
   document.querySelectorAll('.tab').forEach(function(tab){
     tab.addEventListener('click', function(){
@@ -205,22 +246,115 @@
   });
 </script>
 
-<!-- Firebase (실시간 후기 시스템) -->
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="firebase-init.js"></script>
 <script>
-  var firebaseConfig = {
-    apiKey: "AIzaSyBjL-AdZVHBZdsvzqniuPDynk7G3-kH6yU",
-    authDomain: "salesscript-87136.firebaseapp.com",
-    projectId: "salesscript-87136",
-    storageBucket: "salesscript-87136.firebasestorage.app",
-    messagingSenderId: "91082261854",
-    appId: "1:91082261854:web:73018d6b146d69db6b3bcf"
-  };
-  firebase.initializeApp(firebaseConfig);
-  var db = firebase.firestore();
   var reviewsRef = db.collection('reviews');
+  var pendingAction = null; // 'buy' | 'review'
+  var authMode = 'login';
 
+  // ---- Auth modal open/close ----
+  function openAuthModal(){ document.getElementById('auth-overlay').classList.add('show'); }
+  function closeAuthModal(){ document.getElementById('auth-overlay').classList.remove('show'); }
+  document.getElementById('auth-close').addEventListener('click', closeAuthModal);
+
+  document.querySelectorAll('.auth-tab').forEach(function(t){
+    t.addEventListener('click', function(){
+      document.querySelectorAll('.auth-tab').forEach(function(x){x.classList.remove('active');});
+      t.classList.add('active');
+      authMode = t.getAttribute('data-mode');
+      document.getElementById('auth-submit-btn').textContent = authMode === 'login' ? '로그인하기' : '회원가입하기';
+      document.getElementById('auth-msg').textContent = '';
+    });
+  });
+
+  document.getElementById('google-login-btn').addEventListener('click', function(){
+    var provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider).then(function(){
+      closeAuthModal();
+    }).catch(function(err){
+      document.getElementById('auth-msg').textContent = '구글 로그인에 실패했습니다: ' + err.message;
+    });
+  });
+
+  document.getElementById('auth-submit-btn').addEventListener('click', function(){
+    var email = document.getElementById('auth-email').value.trim();
+    var pw = document.getElementById('auth-password').value;
+    var msgEl = document.getElementById('auth-msg');
+    if(!email || !pw){
+      msgEl.textContent = '이메일과 비밀번호를 입력해주세요.';
+      return;
+    }
+    var action = authMode === 'login'
+      ? auth.signInWithEmailAndPassword(email, pw)
+      : auth.createUserWithEmailAndPassword(email, pw);
+
+    action.then(function(){
+      closeAuthModal();
+    }).catch(function(err){
+      msgEl.textContent = err.message;
+    });
+  });
+
+  // ---- 구매하기 버튼 ----
+  document.getElementById('buy-btn').addEventListener('click', function(){
+    var user = auth.currentUser;
+    if(!user){
+      pendingAction = 'buy';
+      openAuthModal();
+      return;
+    }
+    doPurchaseAndRedirect(user);
+  });
+
+  document.getElementById('gate-login-btn').addEventListener('click', function(){
+    pendingAction = null;
+    openAuthModal();
+  });
+
+  function doPurchaseAndRedirect(user){
+    document.getElementById('page-loading').classList.add('show');
+    ensureOrder(user).then(function(){
+      window.location.href = 'mypage.html';
+    }).catch(function(err){
+      document.getElementById('page-loading').classList.remove('show');
+      alert('처리 중 오류가 발생했습니다: ' + err.message);
+    });
+  }
+
+  // ---- 로그인 상태에 따른 리뷰 작성 권한 ----
+  var currentUserHasPurchased = false;
+
+  auth.onAuthStateChanged(function(user){
+    if(!user){
+      document.getElementById('review-gate').style.display = 'block';
+      document.getElementById('review-write').style.display = 'none';
+      return;
+    }
+    if(pendingAction === 'buy'){
+      pendingAction = null;
+      doPurchaseAndRedirect(user);
+      return;
+    }
+    hasPurchased(user.uid).then(function(purchased){
+      currentUserHasPurchased = purchased;
+      if(purchased){
+        document.getElementById('review-gate').style.display = 'none';
+        document.getElementById('review-write').style.display = 'block';
+      } else {
+        document.getElementById('review-gate').innerHTML =
+          '<div class="review-locked"><p>구매를 완료하시면 후기를 작성할 수 있습니다.</p>' +
+          '<button type="button" onclick="document.getElementById(\'buy-btn\').click()">지금 구매하기</button></div>';
+        document.getElementById('review-gate').style.display = 'block';
+        document.getElementById('review-write').style.display = 'none';
+      }
+    });
+  });
+
+  // ---- 리뷰 작성/표시 ----
   var selectedRating = 5;
   var starEls = document.querySelectorAll('#star-picker span');
   function paintStars(v){
@@ -246,6 +380,7 @@
     var listEl = document.getElementById('review-list');
     if(docs.length === 0){
       listEl.innerHTML = '<div class="review-empty">아직 등록된 후기가 없습니다. 첫 번째 후기를 남겨주세요!</div>';
+      document.getElementById('review-summary').innerHTML = '';
       return;
     }
     var sum = 0;
@@ -259,7 +394,7 @@
         dateStr = dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + String(dt.getDate()).padStart(2,'0');
       }
       html += '<div class="review-item">' +
-        '<span class="who">' + escapeHtml(d.name || '익명') + '<span class="date">' + dateStr + '</span></span>' +
+        '<span class="who">' + escapeHtml(d.name || '익명') + '<span class="verified-badge">구매인증</span><span class="date">' + dateStr + '</span></span>' +
         '<div class="stars">' + '★★★★★'.slice(0, d.rating || 5) + '</div>' +
         '<div class="body">' + escapeHtml(d.body || '') + '</div>' +
         '</div>';
@@ -279,6 +414,10 @@
 
   var submitBtn = document.getElementById('review-submit');
   submitBtn.addEventListener('click', function(){
+    var user = auth.currentUser;
+    if(!user || !currentUserHasPurchased){
+      return;
+    }
     var nameEl = document.getElementById('review-name');
     var bodyEl = document.getElementById('review-body');
     var msgEl = document.getElementById('review-msg');
@@ -300,6 +439,7 @@
     submitBtn.textContent = '등록 중...';
 
     reviewsRef.add({
+      uid: user.uid,
       name: name,
       body: body,
       rating: selectedRating,
