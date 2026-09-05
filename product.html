@@ -54,6 +54,12 @@
       <div class="tab active" data-tab="detail">상세설명</div>
       <div class="tab" data-tab="review">리뷰</div>
     </div>
+
+    <div class="review-bonus-banner" id="review-bonus-banner">
+      <span class="rb-icon">🎁</span>
+      <span class="rb-text"><b>후기 남기면 [마법의 반론 제기]</b> 스크립트를 무료로 드려요!</span>
+      <span class="rb-arrow">보러가기 ›</span>
+    </div>
   </div>
 </section>
 
@@ -254,6 +260,11 @@
     tab.addEventListener('click', function(){
       activateTab(tab.getAttribute('data-tab'));
     });
+  });
+
+  document.getElementById('review-bonus-banner').addEventListener('click', function(){
+    activateTab('review');
+    document.getElementById('panel-review').scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
   if(window.location.hash === '#review'){
