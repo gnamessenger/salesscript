@@ -248,7 +248,73 @@ img,svg{max-width:100%;}
   font-weight:400;
 }
 .review-item .stars{color:var(--gold);font-size:12px;margin:4px 0;}
-.review-item .body{font-size:13.5px;color:#3a3f52;line-height:1.6;}
+.review-item .body{font-size:13.5px;color:#3a3f52;line-height:1.6;white-space:pre-wrap;}
+
+.review-write{
+  background:var(--bg-soft);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:22px;
+}
+.review-write h4{
+  font-size:14.5px;
+  font-weight:800;
+  color:var(--text);
+  margin-bottom:12px;
+}
+.star-picker{
+  font-size:24px;
+  letter-spacing:4px;
+  color:#d9dce3;
+  margin-bottom:12px;
+  cursor:pointer;
+}
+.star-picker span{transition:color .1s;}
+.star-picker span.on{color:var(--gold);}
+.review-input{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:11px 12px;
+  font-size:14px;
+  font-family:inherit;
+  margin-bottom:10px;
+  resize:vertical;
+  background:#fff;
+  color:var(--text);
+}
+.review-input:focus{outline:none;border-color:var(--navy);}
+.review-submit-btn{
+  width:100%;
+  background:var(--navy);
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  padding:12px;
+  font-size:14.5px;
+  font-weight:700;
+  font-family:inherit;
+  cursor:pointer;
+}
+.review-submit-btn:disabled{opacity:.6;cursor:default;}
+.review-msg{margin-top:8px;font-size:12.5px;text-align:center;min-height:1em;}
+.review-msg.success{color:#1a9e6b;font-weight:700;}
+.review-msg.error{color:var(--red);font-weight:700;}
+
+.review-summary{
+  font-size:13.5px;
+  color:var(--text-dim);
+  font-weight:600;
+  margin-bottom:14px;
+}
+.review-summary .stars{color:var(--gold);}
+.review-loading,.review-empty{
+  padding:24px 0;
+  text-align:center;
+  font-size:13.5px;
+  color:var(--text-dim);
+}
 
 /* PRICE CARD */
 .price-section{padding:30px 0 20px;}

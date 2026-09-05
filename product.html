@@ -98,15 +98,21 @@
   </div>
 
   <div class="review-panel" id="panel-review">
-    <div class="review-item">
-      <span class="who">김**<span class="date">2026-08-12</span></span>
-      <div class="stars">★★★★★</div>
-      <div class="body">막연했던 세일즈 화법을 대본으로 받으니 확실히 다릅니다. 왜 거절당하는지, 어떻게 대응해야 하는지 명확해졌어요.</div>
+    <div class="review-write">
+      <h4>후기 남기기</h4>
+      <div class="star-picker" id="star-picker">
+        <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+      </div>
+      <input type="text" id="review-name" class="review-input" placeholder="이름 (예: 홍길동, 김**)" maxlength="20">
+      <textarea id="review-body" class="review-input" rows="3" placeholder="실제 사용 후기를 남겨주세요" maxlength="300"></textarea>
+      <button type="button" id="review-submit" class="review-submit-btn">후기 등록하기</button>
+      <div class="review-msg" id="review-msg"></div>
     </div>
-    <div class="review-item">
-      <span class="who">이**<span class="date">2026-08-20</span></span>
-      <div class="stars">★★★★★</div>
-      <div class="body">1차, 2차 대본이 이어지는 흐름이라 실제 미팅에서 그대로 따라 하기 좋았습니다. 반론 처리 보너스까지 알차네요.</div>
+
+    <div class="review-summary" id="review-summary"></div>
+
+    <div id="review-list">
+      <div class="review-loading">후기를 불러오는 중...</div>
     </div>
   </div>
 </div>
@@ -195,6 +201,123 @@
       var target = tab.getAttribute('data-tab');
       document.getElementById('panel-detail').style.display = target === 'detail' ? 'block' : 'none';
       document.getElementById('panel-review').classList.toggle('active', target === 'review');
+    });
+  });
+</script>
+
+<!-- Firebase (실시간 후기 시스템) -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyBjL-AdZVHBZdsvzqniuPDynk7G3-kH6yU",
+    authDomain: "salesscript-87136.firebaseapp.com",
+    projectId: "salesscript-87136",
+    storageBucket: "salesscript-87136.firebasestorage.app",
+    messagingSenderId: "91082261854",
+    appId: "1:91082261854:web:73018d6b146d69db6b3bcf"
+  };
+  firebase.initializeApp(firebaseConfig);
+  var db = firebase.firestore();
+  var reviewsRef = db.collection('reviews');
+
+  var selectedRating = 5;
+  var starEls = document.querySelectorAll('#star-picker span');
+  function paintStars(v){
+    starEls.forEach(function(s){
+      s.classList.toggle('on', parseInt(s.dataset.v, 10) <= v);
+    });
+  }
+  paintStars(selectedRating);
+  starEls.forEach(function(s){
+    s.addEventListener('click', function(){
+      selectedRating = parseInt(s.dataset.v, 10);
+      paintStars(selectedRating);
+    });
+  });
+
+  function escapeHtml(str){
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderReviews(docs){
+    var listEl = document.getElementById('review-list');
+    if(docs.length === 0){
+      listEl.innerHTML = '<div class="review-empty">아직 등록된 후기가 없습니다. 첫 번째 후기를 남겨주세요!</div>';
+      return;
+    }
+    var sum = 0;
+    var html = '';
+    docs.forEach(function(doc){
+      var d = doc.data();
+      sum += (d.rating || 5);
+      var dateStr = '';
+      if(d.createdAt && d.createdAt.toDate){
+        var dt = d.createdAt.toDate();
+        dateStr = dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + String(dt.getDate()).padStart(2,'0');
+      }
+      html += '<div class="review-item">' +
+        '<span class="who">' + escapeHtml(d.name || '익명') + '<span class="date">' + dateStr + '</span></span>' +
+        '<div class="stars">' + '★★★★★'.slice(0, d.rating || 5) + '</div>' +
+        '<div class="body">' + escapeHtml(d.body || '') + '</div>' +
+        '</div>';
+    });
+    var avg = (sum / docs.length).toFixed(1);
+    document.getElementById('review-summary').innerHTML =
+      '총 ' + docs.length + '개의 후기 · 평균 <span class="stars">★</span> ' + avg;
+    listEl.innerHTML = html;
+  }
+
+  reviewsRef.orderBy('createdAt', 'desc').limit(100).onSnapshot(function(snapshot){
+    renderReviews(snapshot.docs);
+  }, function(err){
+    document.getElementById('review-list').innerHTML = '<div class="review-empty">후기를 불러오지 못했습니다.</div>';
+    console.error(err);
+  });
+
+  var submitBtn = document.getElementById('review-submit');
+  submitBtn.addEventListener('click', function(){
+    var nameEl = document.getElementById('review-name');
+    var bodyEl = document.getElementById('review-body');
+    var msgEl = document.getElementById('review-msg');
+    var name = nameEl.value.trim();
+    var body = bodyEl.value.trim();
+
+    if(!name || !body){
+      msgEl.textContent = '이름과 후기 내용을 모두 입력해주세요.';
+      msgEl.className = 'review-msg error';
+      return;
+    }
+    if(body.length < 5){
+      msgEl.textContent = '후기 내용을 조금 더 자세히 적어주세요 (5자 이상).';
+      msgEl.className = 'review-msg error';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = '등록 중...';
+
+    reviewsRef.add({
+      name: name,
+      body: body,
+      rating: selectedRating,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(function(){
+      nameEl.value = '';
+      bodyEl.value = '';
+      selectedRating = 5;
+      paintStars(5);
+      msgEl.textContent = '후기가 등록되었습니다. 감사합니다!';
+      msgEl.className = 'review-msg success';
+    }).catch(function(err){
+      msgEl.textContent = '등록에 실패했습니다. 잠시 후 다시 시도해주세요.';
+      msgEl.className = 'review-msg error';
+      console.error(err);
+    }).finally(function(){
+      submitBtn.disabled = false;
+      submitBtn.textContent = '후기 등록하기';
     });
   });
 </script>
