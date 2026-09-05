@@ -167,44 +167,21 @@
   </div>
 </section>
 
-<!-- FORM (사전예약 리드수집) -->
-<section class="form-section" id="apply">
-  <div class="wrap">
-    <h2>지금 사전예약하고<br>특가 잠가두세요</h2>
-    <p class="sub">정식 오픈 시 가장 먼저 안내드립니다</p>
-
-    <form class="lead-form" id="lead-form" action="https://stibee.com/api/v1.0/lists/aVzTuwuLIlANam8FsTKdRV2zm98-tw==/public/subscribers" method="POST" target="_blank" accept-charset="utf-8" novalidate>
-      <div class="field">
-        <label for="email">이메일 주소<span class="req">*</span></label>
-        <input type="text" id="email" name="email" placeholder="example@email.com" required>
-      </div>
-      <div class="field">
-        <label for="name">이름<span class="req">*</span></label>
-        <input type="text" id="name" name="name" placeholder="이름을 입력해주세요" required>
-      </div>
-      <div class="field">
-        <label for="phone">휴대폰<span class="req">*</span></label>
-        <input type="text" id="phone" name="phone" placeholder="010-0000-0000" required>
-      </div>
-      <label class="policy">
-        <input type="checkbox" required>
-        <span>개인정보 수집 및 이용에 동의합니다. (사전예약 안내 목적으로만 사용, 보유기간 종료 시 즉시 파기)</span>
-      </label>
-      <button type="submit" class="submit-btn" onclick="if(typeof fbq!=='undefined'){fbq('track','Lead');}">특가 79,000원으로 사전예약하기</button>
-      <div class="form-result" id="form-result"></div>
-    </form>
-  </div>
-</section>
-
 <footer>
   <div class="wrap">
-    본 페이지는 정보 제공 목적이며, 실제 결제는 정식 오픈 시 별도 안내됩니다.<br>
-    문의사항은 사전예약 후 남겨주신 연락처로 안내드립니다.
+    <div class="seller-info">
+      <b>아우라세일즈 평생교육원</b> | 대표: 조혜영<br>
+      사업자등록번호: 825-90-01995<br>
+      주소: 화성시 매송고색로 366, 205호<br>
+      전화: 010-4242-9810 | 이메일: aurasalesedu@gmail.com<br><br>
+      본 페이지는 테스트(사전예약) 단계이며, 실제 결제는 정식 오픈 시 별도 안내됩니다.<br>
+      상품 정보, 거래에 관한 모든 책임은 판매자에게 있습니다.
+    </div>
   </div>
 </footer>
 
 <div class="sticky-cta">
-  <a href="#apply">특가 79,000원으로 사전예약하기</a>
+  <button type="button" id="sticky-buy-btn">구매하기</button>
 </div>
 
 <!-- AUTH MODAL -->
@@ -307,7 +284,7 @@
   });
 
   // ---- 구매하기 버튼 ----
-  document.getElementById('buy-btn').addEventListener('click', function(){
+  function handleBuyClick(){
     var user = auth.currentUser;
     if(!user){
       pendingAction = 'buy';
@@ -315,7 +292,9 @@
       return;
     }
     doPurchaseAndRedirect(user);
-  });
+  }
+  document.getElementById('buy-btn').addEventListener('click', handleBuyClick);
+  document.getElementById('sticky-buy-btn').addEventListener('click', handleBuyClick);
 
   document.getElementById('gate-login-btn').addEventListener('click', function(){
     pendingAction = null;
