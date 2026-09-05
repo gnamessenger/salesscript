@@ -241,15 +241,26 @@
 </div>
 
 <script>
+  function activateTab(target){
+    document.querySelectorAll('.tab').forEach(function(t){
+      t.classList.toggle('active', t.getAttribute('data-tab') === target);
+    });
+    document.getElementById('panel-detail').style.display = target === 'detail' ? 'block' : 'none';
+    document.getElementById('panel-review').classList.toggle('active', target === 'review');
+  }
+
   document.querySelectorAll('.tab').forEach(function(tab){
     tab.addEventListener('click', function(){
-      document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
-      tab.classList.add('active');
-      var target = tab.getAttribute('data-tab');
-      document.getElementById('panel-detail').style.display = target === 'detail' ? 'block' : 'none';
-      document.getElementById('panel-review').classList.toggle('active', target === 'review');
+      activateTab(tab.getAttribute('data-tab'));
     });
   });
+
+  if(window.location.hash === '#review'){
+    activateTab('review');
+    setTimeout(function(){
+      document.getElementById('panel-review').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
 </script>
 
 <!-- Firebase -->
