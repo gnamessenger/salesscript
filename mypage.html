@@ -116,15 +116,12 @@
       contentHtml += '<div class="order-card">' +
         '<div class="pname">' + d.productName + '</div>' +
         '<div class="meta">기간 제한 없음</div>' +
-        '<button type="button" class="download-btn" onclick="handleDownload()">PDF 다운로드</button>' +
+        '<a href="script-1st.pdf" download class="download-btn">1차 미팅 대본 다운로드</a>' +
+        '<a href="script-2nd.pdf" download class="download-btn">2차 미팅 대본 다운로드</a>' +
         '</div>';
     });
     ordersEl.innerHTML = ordersHtml;
     contentEl.innerHTML = contentHtml;
-  }
-
-  function handleDownload(){
-    alert('테스트 단계입니다. 정식 오픈 시 이 버튼을 누르면 실제 PDF 파일이 다운로드됩니다.');
   }
 
   document.getElementById('nickname-save-btn').addEventListener('click', function(){
