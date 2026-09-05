@@ -340,6 +340,27 @@ img,svg{max-width:100%;}
   margin-bottom:14px;
 }
 .review-summary .stars{color:var(--gold);}
+.review-pager{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  justify-content:center;
+  margin-top:20px;
+}
+.page-btn{
+  min-width:34px;
+  height:34px;
+  border:1px solid var(--border);
+  background:#fff;
+  border-radius:8px;
+  font-size:13px;
+  font-weight:700;
+  color:var(--text-dim);
+  cursor:pointer;
+  font-family:inherit;
+}
+.page-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+
 .review-loading,.review-empty{
   padding:24px 0;
   text-align:center;
