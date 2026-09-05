@@ -203,6 +203,10 @@
       <div class="auth-tab" data-mode="signup">회원가입</div>
     </div>
 
+    <div class="field" id="auth-nickname-field" style="display:none;">
+      <label>닉네임</label>
+      <input type="text" id="auth-nickname" class="review-input" placeholder="리뷰·마이페이지에 표시될 이름" maxlength="20">
+    </div>
     <div class="field">
       <label>이메일</label>
       <input type="email" id="auth-email" class="review-input" placeholder="example@email.com">
@@ -251,6 +255,7 @@
       t.classList.add('active');
       authMode = t.getAttribute('data-mode');
       document.getElementById('auth-submit-btn').textContent = authMode === 'login' ? '로그인하기' : '회원가입하기';
+      document.getElementById('auth-nickname-field').style.display = authMode === 'signup' ? 'block' : 'none';
       document.getElementById('auth-msg').textContent = '';
     });
   });
@@ -267,16 +272,29 @@
   document.getElementById('auth-submit-btn').addEventListener('click', function(){
     var email = document.getElementById('auth-email').value.trim();
     var pw = document.getElementById('auth-password').value;
+    var nickname = document.getElementById('auth-nickname').value.trim();
     var msgEl = document.getElementById('auth-msg');
     if(!email || !pw){
       msgEl.textContent = '이메일과 비밀번호를 입력해주세요.';
       return;
     }
-    var action = authMode === 'login'
-      ? auth.signInWithEmailAndPassword(email, pw)
-      : auth.createUserWithEmailAndPassword(email, pw);
+    if(authMode === 'signup' && !nickname){
+      msgEl.textContent = '닉네임을 입력해주세요.';
+      return;
+    }
 
-    action.then(function(){
+    if(authMode === 'login'){
+      auth.signInWithEmailAndPassword(email, pw).then(function(){
+        closeAuthModal();
+      }).catch(function(err){
+        msgEl.textContent = err.message;
+      });
+      return;
+    }
+
+    auth.createUserWithEmailAndPassword(email, pw).then(function(cred){
+      return cred.user.updateProfile({ displayName: nickname });
+    }).then(function(){
       closeAuthModal();
     }).catch(function(err){
       msgEl.textContent = err.message;
