@@ -114,6 +114,13 @@
       <textarea id="review-body" class="review-input" rows="3" placeholder="실제 사용 후기를 남겨주세요" maxlength="300"></textarea>
       <button type="button" id="review-submit" class="review-submit-btn">후기 등록하기</button>
       <div class="review-msg" id="review-msg"></div>
+
+      <div class="bonus-download" id="bonus-download" style="display:none;">
+        <div class="tag">후기 감사 선물</div>
+        <h4>🎁 마법의 반론 제기</h4>
+        <p>후기를 남겨주셔서 감사합니다! 아래 버튼으로 바로 받아가세요.</p>
+        <a href="magic-objection.pdf" download class="bonus-download-btn">PDF 다운로드</a>
+      </div>
     </div>
 
     <div class="review-summary" id="review-summary"></div>
@@ -344,6 +351,11 @@
       if(purchased){
         document.getElementById('review-gate').style.display = 'none';
         document.getElementById('review-write').style.display = 'block';
+        reviewsRef.where('uid', '==', user.uid).limit(1).get().then(function(snap){
+          if(!snap.empty){
+            document.getElementById('bonus-download').style.display = 'block';
+          }
+        });
       } else {
         document.getElementById('review-gate').innerHTML =
           '<div class="review-locked"><p>구매를 완료하시면 후기를 작성할 수 있습니다.</p>' +
@@ -451,6 +463,7 @@
       paintStars(5);
       msgEl.textContent = '후기가 등록되었습니다. 감사합니다!';
       msgEl.className = 'review-msg success';
+      document.getElementById('bonus-download').style.display = 'block';
     }).catch(function(err){
       msgEl.textContent = '등록에 실패했습니다. 잠시 후 다시 시도해주세요.';
       msgEl.className = 'review-msg error';
