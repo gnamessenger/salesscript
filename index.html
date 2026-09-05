@@ -442,9 +442,300 @@
     border-radius:10px;
     text-decoration:none;
   }
+
+  /* ===== LONGFORM SALES LETTER (1st landing) ===== */
+  .lf-dark{
+    background:#0c0c10;
+    color:#fff;
+    padding:44px 0;
+    text-align:center;
+  }
+  .lf-dark .tag{
+    color:var(--red);
+    font-weight:800;
+    font-size:14px;
+    margin-bottom:12px;
+  }
+  .lf-dark h1{
+    font-size:26px;
+    font-weight:900;
+    line-height:1.45;
+  }
+  .lf-dark h1 .hl{color:var(--gold);}
+  .lf-dark .sub{
+    margin-top:18px;
+    font-size:14.5px;
+    color:#c8c8d0;
+    line-height:1.7;
+  }
+  .proof-card{
+    margin:28px 20px 0;
+    background:#17171d;
+    border:1px solid #2b2b35;
+    border-radius:14px;
+    padding:22px;
+    text-align:left;
+  }
+  .proof-card .num{font-size:26px;font-weight:900;color:var(--gold);}
+  .proof-card .label{font-size:12.5px;color:#9a9aa8;margin-top:4px;}
+  .proof-grid{display:flex;justify-content:space-between;gap:10px;text-align:center;}
+  .proof-grid>div{flex:1;}
+  .proof-grid .num{font-size:20px;}
+
+  .lf-white{padding:44px 0;}
+  .lf-white h2{
+    font-size:21px;
+    font-weight:900;
+    text-align:center;
+    line-height:1.5;
+    color:var(--text);
+  }
+  .lf-white h2 .hl{color:var(--red);}
+  .lf-white .sub{
+    text-align:center;
+    margin-top:12px;
+    font-size:14px;
+    color:var(--text-dim);
+  }
+
+  .expand-row{
+    margin-top:26px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+  }
+  .expand-row span{
+    background:var(--bg-soft);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:7px 14px;
+    font-size:13px;
+    font-weight:600;
+    color:#3a3f52;
+  }
+
+  .problem-list{margin-top:28px;display:flex;flex-direction:column;gap:12px;}
+  .problem-item{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+  }
+  .problem-item .ic{font-size:20px;flex-shrink:0;}
+  .problem-item .tx{font-size:14px;color:#3a3f52;}
+  .problem-item .tx b{color:var(--text);}
+
+  .solution-box{
+    margin-top:28px;
+    background:linear-gradient(135deg,#eef1ff,#f7f8fb);
+    border:1px solid #d8ddf5;
+    border-radius:16px;
+    padding:26px 22px;
+    text-align:center;
+  }
+  .solution-box .big{
+    font-size:18px;
+    font-weight:900;
+    color:var(--navy);
+    line-height:1.5;
+  }
+  .solution-box .small{
+    margin-top:10px;
+    font-size:13.5px;
+    color:var(--text-dim);
+  }
+
+  /* success stories placeholder */
+  .story-list{margin-top:28px;display:flex;flex-direction:column;gap:16px;}
+  .story-card{
+    border:1px dashed #cfd3e0;
+    border-radius:14px;
+    padding:20px;
+    background:var(--bg-soft);
+  }
+  .story-card .head{
+    font-size:14.5px;
+    font-weight:800;
+    color:var(--navy);
+  }
+  .story-card .placeholder{
+    margin-top:8px;
+    font-size:13px;
+    color:#a9adba;
+    font-style:italic;
+  }
+
+  /* urgency / price schedule */
+  .urgency-box{
+    margin-top:30px;
+    border:2px solid #fbdada;
+    background:#fff6f6;
+    border-radius:16px;
+    padding:22px;
+  }
+  .urgency-box .warn{
+    color:var(--red);
+    font-weight:800;
+    font-size:14.5px;
+    text-align:center;
+  }
+  .schedule{margin-top:18px;display:flex;flex-direction:column;gap:8px;}
+  .sched-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:11px 14px;
+    border-radius:10px;
+    font-size:13.5px;
+    background:#fff;
+    border:1px solid var(--border);
+    color:var(--text-dim);
+  }
+  .sched-row.done span{text-decoration:line-through;}
+  .sched-row.current{
+    background:#fff;
+    border:2px solid var(--red);
+    font-weight:800;
+    color:var(--text);
+  }
+  .sched-row.current .price{color:var(--red);}
+  .sched-row.next{color:#a9adba;}
+
+  .trust-box{
+    margin-top:24px;
+    text-align:center;
+    padding:20px;
+  }
+  .trust-box .icon{font-size:22px;}
+  .trust-box p{
+    margin-top:10px;
+    font-size:13.5px;
+    color:#3a3f52;
+    line-height:1.7;
+  }
+
+  .lf-cta{
+    display:block;
+    max-width:560px;
+    margin:30px auto 0;
+    text-align:center;
+    background:var(--red);
+    color:#fff;
+    font-weight:800;
+    font-size:16px;
+    padding:17px;
+    border-radius:12px;
+    text-decoration:none;
+  }
 </style>
 </head>
 <body>
+
+<!-- ============ 1st LANDING: LONGFORM SALES LETTER ============ -->
+
+<section class="lf-dark">
+  <div class="wrap">
+    <div class="tag">실화입니까? 네, 실제 상황입니다.</div>
+    <h1>1:1 컨설팅 단 한 번,<br><span class="hl">770만원</span> 결제받았습니다</h1>
+    <p class="sub">마케팅에 돈을 쏟아붓지 마세요.<br>제대로 된 화법 하나가, 광고비보다 강합니다.</p>
+  </div>
+
+  <div class="proof-card">
+    <div class="proof-grid">
+      <div>
+        <div class="num">770만</div>
+        <div class="label">1:1 컨설팅<br>최대 결제액</div>
+      </div>
+      <div>
+        <div class="num">20년</div>
+        <div class="label">세일즈<br>실전 경력</div>
+      </div>
+      <div>
+        <div class="num">1,000+</div>
+        <div class="label">컨설팅·강의<br>진행 횟수</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="lf-white">
+  <div class="wrap">
+    <h2>이 숫자가<br>'운'으로 가능할까요?</h2>
+    <p class="sub">보험, 부동산, 컨설팅, 강의, B2B 영업까지 —<br>업종은 상관없습니다. 화법만 갖춰지면 계약은 따라옵니다.</p>
+    <div class="expand-row">
+      <span>보험설계사</span>
+      <span>부동산 중개</span>
+      <span>컨설턴트</span>
+      <span>강사</span>
+      <span>프리랜서 영업</span>
+      <span>B2B 세일즈</span>
+    </div>
+  </div>
+</section>
+
+<section class="lf-white" style="padding-top:0;">
+  <div class="wrap">
+    <h2>혹시 지금,<br><span class="hl">이런 벽</span>에 부딪히고 계신가요?</h2>
+    <div class="problem-list">
+      <div class="problem-item"><span class="ic">😓</span><span class="tx"><b>고가 상품이나 무형의 서비스</b>를 설명하려고만 하면 말이 꼬이고, 고객의 눈빛이 흐려진다.</span></div>
+      <div class="problem-item"><span class="ic">💸</span><span class="tx">가격을 말하는 순간 <b>고객의 표정이 굳는 게</b> 느껴지고, 나도 모르게 목소리가 작아진다.</span></div>
+      <div class="problem-item"><span class="ic">📉</span><span class="tx">열심히는 하는데 <b>매출은 항상 제자리</b>. 뭐가 문제인지도 정확히 모르겠다.</span></div>
+    </div>
+
+    <div class="solution-box">
+      <div class="big">이건 노력이 아니라 '화법'의 문제입니다.</div>
+      <div class="small">읽기만 해도 되는 대본이 있다면, 매번 새로 고민할 필요가 없습니다.</div>
+    </div>
+  </div>
+</section>
+
+<section class="lf-white" style="padding-top:0;">
+  <div class="wrap">
+    <h2>실제로 이 화법을 쓴<br>사람들의 이야기</h2>
+    <!-- TODO: 실제 성공사례/후기 자료 받으면 아래 story-card 내용 교체 -->
+    <div class="story-list">
+      <div class="story-card">
+        <div class="head">고객 성공사례 준비 중</div>
+        <div class="placeholder">실제 후기와 사례가 곧 채워집니다.</div>
+      </div>
+      <div class="story-card">
+        <div class="head">고객 성공사례 준비 중</div>
+        <div class="placeholder">실제 후기와 사례가 곧 채워집니다.</div>
+      </div>
+      <div class="story-card">
+        <div class="head">고객 성공사례 준비 중</div>
+        <div class="placeholder">실제 후기와 사례가 곧 채워집니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="lf-white" style="padding-top:0;">
+  <div class="wrap">
+    <div class="urgency-box">
+      <div class="warn">🚨 단계별 가격 인상 진행 중!</div>
+      <div class="schedule">
+        <div class="sched-row done"><span>1차 사전예약가</span><span>49,000원 (마감)</span></div>
+        <div class="sched-row done"><span>2차 사전예약가</span><span>59,000원 (마감)</span></div>
+        <div class="sched-row current"><span>현재가</span><span class="price">79,000원 (예약중)</span></div>
+        <div class="sched-row next"><span>정식 오픈 이후</span><span>99,000원 (인상예정)</span></div>
+      </div>
+    </div>
+
+    <div class="trust-box">
+      <div class="icon">⚠️</div>
+      <p><b style="color:var(--text)">낚시용 자료가 아닙니다.</b><br>추가 결제를 유도하는 알맹이 없는 자료가 아닙니다. 솔직히 110만원에 팔아도 아깝지 않은 실전 대본만 담았습니다.</p>
+    </div>
+
+    <a href="#apply" class="lf-cta">지금 79,000원에 화법 선점하기</a>
+  </div>
+</section>
+
+<!-- ============ 2nd LANDING: PRODUCT DETAIL PAGE ============ -->
 
 <div class="seller-bar">
   <div class="wrap">
