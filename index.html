@@ -236,12 +236,26 @@
     });
   });
 
+  var googleLoginInProgress = false;
   document.getElementById('google-login-btn').addEventListener('click', function(){
+    if(googleLoginInProgress){ return; }
+    googleLoginInProgress = true;
+    var btn = document.getElementById('google-login-btn');
+    btn.disabled = true;
     var provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider).then(function(){
       closeAuthModal();
     }).catch(function(err){
-      document.getElementById('auth-msg').textContent = '구글 로그인에 실패했습니다: ' + err.message;
+      if(err.code === 'auth/cancelled-popup-request' || err.code === 'auth/popup-closed-by-user'){
+        document.getElementById('auth-msg').textContent = '';
+      } else if(err.code === 'auth/popup-blocked'){
+        document.getElementById('auth-msg').textContent = '팝업이 차단되었어요. 브라우저 팝업 차단을 해제한 뒤 다시 눌러주세요.';
+      } else {
+        document.getElementById('auth-msg').textContent = '구글 로그인에 실패했습니다: ' + err.message;
+      }
+    }).finally(function(){
+      googleLoginInProgress = false;
+      btn.disabled = false;
     });
   });
 
