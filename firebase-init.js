@@ -34,3 +34,12 @@ function hasPurchased(uid){
   return db.collection('orders').where('uid', '==', uid).where('status', '==', 'completed').limit(1).get()
     .then(function(snap){ return !snap.empty; });
 }
+
+function saveLead(data){
+  return db.collection('leads').add({
+    name: data.name || '',
+    email: data.email || '',
+    phone: data.phone || '',
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+}
