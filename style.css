@@ -771,6 +771,57 @@ footer{
   color:#a9adba;
   text-align:center;
 }
+
+/* revenue report screenshots - 2 per row, they're tall/narrow phone shots */
+.revenue-gallery{
+  margin-top:24px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+.revenue-gallery a{
+  display:block;
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid var(--border);
+}
+.revenue-gallery img{
+  display:block;
+  width:100%;
+  height:auto;
+}
+
+/* youtube testimonial embeds */
+.yt-embed{
+  position:relative;
+  width:100%;
+  padding-bottom:56.25%;
+  height:0;
+  overflow:hidden;
+  border-radius:14px;
+  background:#000;
+}
+.yt-embed.vertical{
+  padding-bottom:177.78%;
+  max-width:320px;
+  margin:0 auto;
+}
+.yt-embed iframe{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  border:0;
+}
+.yt-caption{
+  margin-top:8px;
+  font-size:12.5px;
+  font-weight:700;
+  color:var(--text);
+  text-align:center;
+  line-height:1.5;
+}
 .testimonial-video{
   margin-top:20px;
   width:100%;
