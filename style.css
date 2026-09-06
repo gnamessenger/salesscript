@@ -750,9 +750,9 @@ footer{
 /* real testimonial screenshot gallery */
 .review-gallery{
   margin-top:24px;
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
 }
 .review-gallery a{
   display:block;
