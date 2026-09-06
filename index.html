@@ -3,197 +3,388 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>고가상품 세일즈 화법 완전정복</title>
-<meta name="description" content="1:1 컨설팅 770만원에 판매된 실전 세일즈 대본. 1차 니즈파악부터 2차 클로징까지, 그대로 읽기만 해도 되는 화법.">
+<title>고가상품 세일즈 화법 완전정복 | 무료 상담</title>
+<meta name="description" content="1:1 컨설팅 770만원에 판매된 실전 세일즈 대본. 챗봇과 대화하며 무료 자료를 받아보세요.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ============ 1st LANDING: LONGFORM SALES LETTER ============ -->
+<!-- ============ 1st LANDING: CHATBOT FUNNEL ============ -->
 
-<section class="lf-dark">
-  <div class="wrap">
-    <div class="tag">실화입니까? 네, 실제 상황입니다.</div>
-    <h1>1:1 컨설팅 단 한 번,<br><span class="hl">770만원</span> 결제받았습니다</h1>
-    <p class="sub">마케팅에 돈을 쏟아붓지 마세요.<br>제대로 된 화법 하나가, 광고비보다 강합니다.</p>
-  </div>
-
-  <div class="proof-card">
-    <div class="proof-grid">
-      <div>
-        <div class="num">770만</div>
-        <div class="label">1:1 컨설팅<br>최대 결제액</div>
-      </div>
-      <div>
-        <div class="num">20년</div>
-        <div class="label">세일즈<br>실전 경력</div>
-      </div>
-      <div>
-        <div class="num">1,000+</div>
-        <div class="label">컨설팅·강의<br>진행 횟수</div>
-      </div>
-    </div>
-    <div class="growth-note" style="text-align:center;">1회 강의 최대 매출 5,000만원</div>
-  </div>
-</section>
-
-<section class="lf-white" style="padding-top:0;">
-  <div class="wrap">
-    <div class="solution-box" style="margin-top:0;">
-      <div class="big">만 원짜리를 100명에게 파는 것보다<br>천만 원짜리를 1명에게 파는 게<br>훨씬 쉽습니다</div>
-      <div class="small">화려한 스펙도, 특별한 인맥도 없었습니다.<br>있었던 건 '먹히는 화법' 하나뿐이었죠.</div>
+<div class="chat-page">
+  <div class="chat-header">
+    <div class="chat-avatar">🎯</div>
+    <div class="chat-title">
+      <div class="name">아우라세일즈 상담봇</div>
+      <div class="status">지금 대화 중</div>
     </div>
   </div>
-</section>
+  <div class="chat-body" id="chat-body"></div>
+</div>
 
-<section class="lf-white">
-  <div class="wrap">
-    <h2>이 숫자가<br>'운'으로 가능할까요?</h2>
-    <p class="sub">보험, 부동산, 컨설팅, 강의, B2B 영업까지 —<br>업종은 상관없습니다. 화법만 갖춰지면 계약은 따라옵니다.</p>
-    <div class="expand-row">
-      <span>보험설계사</span>
-      <span>부동산 중개</span>
-      <span>컨설턴트</span>
-      <span>강사</span>
-      <span>프리랜서 영업</span>
-      <span>B2B 세일즈</span>
+<div class="chat-footer-note">
+  <b>아우라세일즈 평생교육원</b> | 대표: 조혜영 | 사업자등록번호: 825-90-01995<br>
+  통신판매업신고번호: 제2025-화성매송-0003호 | 화성시 매송고색로 366, 205호<br>
+  <a href="product.html">상세페이지 바로가기</a>
+</div>
+
+<div class="page-loading" id="page-loading">처리 중...</div>
+
+<!-- AUTH MODAL (구매 시 사용) -->
+<div class="auth-overlay" id="auth-overlay">
+  <div class="auth-modal">
+    <div class="auth-close" id="auth-close">✕</div>
+    <h3>로그인하고 계속하기</h3>
+    <p class="sub">구매 처리를 위해 로그인이 필요합니다</p>
+
+    <button type="button" class="google-btn" id="google-login-btn">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.4 29.3 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.3 1 7.3 2.7l6-6C33.5 6.5 29 4.5 24 4.5 13.2 4.5 4.5 13.2 4.5 24S13.2 43.5 24 43.5 43.5 34.8 43.5 24c0-1.2-.1-2.4-.3-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 16 19 13 24 13c2.8 0 5.3 1 7.3 2.7l6-6C33.5 6.5 29 4.5 24 4.5c-7.6 0-14.1 4.3-17.4 10.6z"/><path fill="#4CAF50" d="M24 43.5c5.2 0 9.9-1.7 13.5-4.8l-6.2-5.3C29.3 35 26.8 36 24 36c-5.2 0-9.6-2.6-11.3-7l-6.6 5.1C9.8 39 16.4 43.5 24 43.5z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.5l6.2 5.3C40.5 36.5 43.5 30.7 43.5 24c0-1.2-.1-2.4-.3-3.5z"/></svg>
+      Google로 계속하기
+    </button>
+
+    <div class="auth-divider">또는 이메일로</div>
+
+    <div class="auth-tabs">
+      <div class="auth-tab active" data-mode="login">로그인</div>
+      <div class="auth-tab" data-mode="signup">회원가입</div>
     </div>
+
+    <div class="field" id="auth-nickname-field" style="display:none;">
+      <label>닉네임</label>
+      <input type="text" id="auth-nickname" class="review-input" placeholder="리뷰·마이페이지에 표시될 이름" maxlength="20">
+    </div>
+    <div class="field">
+      <label>이메일</label>
+      <input type="email" id="auth-email" class="review-input" placeholder="example@email.com">
+    </div>
+    <div class="field">
+      <label>비밀번호</label>
+      <input type="password" id="auth-password" class="review-input" placeholder="6자 이상">
+    </div>
+    <button type="button" class="auth-submit-btn" id="auth-submit-btn">로그인하기</button>
+    <div class="auth-msg" id="auth-msg"></div>
   </div>
-</section>
+</div>
 
-<section class="lf-white" style="padding-top:0;">
-  <div class="wrap">
-    <h2>혹시 지금,<br><span class="hl">이런 벽</span>에 부딪히고 계신가요?</h2>
-    <div class="problem-list">
-      <div class="problem-item"><span class="ic">😓</span><span class="tx"><b>고가 상품이나 무형의 서비스</b>를 설명하려고만 하면 말이 꼬이고, 고객의 눈빛이 흐려진다.</span></div>
-      <div class="problem-item"><span class="ic">💸</span><span class="tx">가격을 말하는 순간 <b>고객의 표정이 굳는 게</b> 느껴지고, 나도 모르게 목소리가 작아진다.</span></div>
-      <div class="problem-item"><span class="ic">📉</span><span class="tx">열심히는 하는데 <b>매출은 항상 제자리</b>. 뭐가 문제인지도 정확히 모르겠다.</span></div>
-    </div>
-
-    <div class="solution-box">
-      <div class="big">이건 노력이 아니라 '화법'의 문제입니다.</div>
-      <div class="small">읽기만 해도 되는 대본이 있다면, 매번 새로 고민할 필요가 없습니다.</div>
-    </div>
-  </div>
-</section>
-
-<section class="lf-white" style="padding-top:0;">
-  <div class="wrap">
-    <h2><span class="hl">"후기는 거짓말 하지 않습니다"</span><br>실제로 이 화법을 쓴 사람들의 이야기</h2>
-
-    <div class="revenue-gallery" style="margin-top:28px;">
-      <a href="reviews/revenue-2506.jpg" target="_blank" rel="noopener"><img src="reviews/revenue-2506.jpg" alt="2025년 6월 매출보고서 12,790,000원" loading="lazy"></a>
-      <a href="reviews/revenue-2604.jpg" target="_blank" rel="noopener"><img src="reviews/revenue-2604.jpg" alt="2026년 4월 매출보고서 22,170,000원" loading="lazy"></a>
-    </div>
-
-    <div class="growth-stat">
-      <div class="tag">1:1 컨설팅 수강생 실제 매출 변화</div>
-      <div class="row">
-        <div class="before">
-          <div class="lbl">2025년 6월</div>
-          <div class="amt">12,790,000원</div>
-        </div>
-        <div class="arrow">→</div>
-        <div class="after">
-          <div class="lbl">2026년 4월</div>
-          <div class="amt">22,170,000원</div>
-        </div>
-      </div>
-      <div class="growth-badge">10개월 만에 매출 +73% 성장</div>
-      <div class="growth-note">※ 월 300만원 → 3,000만원까지 성장한 사례도 있습니다</div>
-    </div>
-
-    <div class="revenue-gallery">
-      <a href="reviews/revenue-2411.jpg" target="_blank" rel="noopener"><img src="reviews/revenue-2411.jpg" alt="2024년 11월 매출보고서" loading="lazy"></a>
-      <a href="reviews/revenue-b2.jpg" target="_blank" rel="noopener"><img src="reviews/revenue-b2.jpg" alt="월별 매출보고서" loading="lazy"></a>
-      <a href="reviews/revenue-b4.jpg" target="_blank" rel="noopener"><img src="reviews/revenue-b4.jpg" alt="월별 매출보고서" loading="lazy"></a>
-      <a href="reviews/revenue-b5.jpg" target="_blank" rel="noopener"><img src="reviews/revenue-b5.jpg" alt="월별 매출보고서" loading="lazy"></a>
-      <a href="reviews/revenue-2506.jpg" target="_blank" rel="noopener"><img src="reviews/revenue-2506.jpg" alt="2025년 6월 매출보고서" loading="lazy"></a>
-      <a href="reviews/revenue-b8.jpg" target="_blank" rel="noopener"><img src="reviews/revenue-b8.jpg" alt="월별 매출보고서" loading="lazy"></a>
-      <a href="reviews/revenue-2604.jpg" target="_blank" rel="noopener"><img src="reviews/revenue-2604.jpg" alt="2026년 4월 매출보고서" loading="lazy"></a>
-    </div>
-    <p class="gallery-note">※ 실제 수강생의 월별 매출보고서 원본 캡처입니다. 이미지를 누르면 크게 볼 수 있습니다.</p>
-
-    <div class="review-gallery">
-      <a href="reviews/review-1.jpg" target="_blank" rel="noopener"><img src="reviews/review-1.jpg" alt="실제 후기 캡처" loading="lazy"></a>
-      <a href="reviews/review-2.jpg" target="_blank" rel="noopener"><img src="reviews/review-2.jpg" alt="실제 후기 캡처" loading="lazy"></a>
-      <a href="reviews/review-3.jpg" target="_blank" rel="noopener"><img src="reviews/review-3.jpg" alt="실제 후기 캡처" loading="lazy"></a>
-      <a href="reviews/review-4.jpg" target="_blank" rel="noopener"><img src="reviews/review-4.jpg" alt="실제 후기 캡처" loading="lazy"></a>
-      <a href="reviews/review-5.jpg" target="_blank" rel="noopener"><img src="reviews/review-5.jpg" alt="실제 후기 캡처" loading="lazy"></a>
-      <a href="reviews/review-7.jpg" target="_blank" rel="noopener"><img src="reviews/review-7.jpg" alt="실제 후기 캡처" loading="lazy"></a>
-      <a href="reviews/review-6.jpg" target="_blank" rel="noopener"><img src="reviews/review-6.jpg" alt="수강생 그랜드 파트너 수상" loading="lazy"></a>
-    </div>
-    <p class="gallery-note">※ 실제 1:1 컨설팅 수강생들의 카카오톡 후기 및 수상 사진이며, 개인정보 보호를 위해 이름과 얼굴은 가렸습니다. 이미지를 누르면 크게 볼 수 있습니다.</p>
-
-    <div class="review-gallery">
-      <div>
-        <div class="yt-embed"><iframe src="https://www.youtube.com/embed/ienzHeXqjKs" title="장윤정 후기" loading="lazy" allowfullscreen></iframe></div>
-        <div class="yt-caption">"보험 신입인데 계약이 척척 되고 있어요" — 장윤정</div>
-      </div>
-      <div>
-        <div class="yt-embed"><iframe src="https://www.youtube.com/embed/wIWSinwNK5I" title="세지 후기" loading="lazy" allowfullscreen></iframe></div>
-        <div class="yt-caption">"신입인데 벌써 실적 잘 내고 있어요? 세일즈 강의를 배운 후 달라진 이야기" — 세지</div>
-      </div>
-      <div>
-        <div class="yt-embed"><iframe src="https://www.youtube.com/embed/rW_XMkk_BoI" title="상조 후기" loading="lazy" allowfullscreen></iframe></div>
-        <div class="yt-caption">"수업 듣고 시키는 대로 했더니, 같은 고객에게 하루 만에 2건 계약" — 상조</div>
-      </div>
-      <div>
-        <div class="yt-embed"><iframe src="https://www.youtube.com/embed/VB3mvG9EoJM" title="신선생님 후기" loading="lazy" allowfullscreen></iframe></div>
-        <div class="yt-caption">"법인 계약 두 건을 혼자 성사, 월 300만원에서 월 3,000만원까지" — 신선생님</div>
-      </div>
-    </div>
-    <p class="gallery-note">※ 실제 1:1 컨설팅 수강생 후기 영상입니다.</p>
-  </div>
-</section>
-
-<section class="lf-white" style="padding-top:0;">
-  <div class="wrap">
-    <div class="urgency-box">
-      <div class="warn">🚨 단계별 가격 인상 진행 중!</div>
-      <div class="feature-list">
-        <div class="feature-item">
-          <span class="ic">🔥</span>
-          <span class="tx"><b>기간별 정가 순차 인상 얼리버드 혜택</b><br>(정해진 기간 이후 가격 인상)</span>
-        </div>
-        <div class="feature-item">
-          <span class="ic">⚡</span>
-          <span class="tx"><b>결제 완료 즉시<br>PDF 파일 자동 다운로드</b></span>
-        </div>
-        <div class="feature-item">
-          <span class="ic">💬</span>
-          <span class="tx"><b>카카오 알림톡으로<br>가이드 자동 발송</b></span>
-        </div>
-      </div>
-
-      <div class="schedule">
-        <div class="sched-row done"><span>1차 판매가</span><span>59,000원 (마감)</span></div>
-        <div class="sched-row current"><span>2차 현재가</span><span class="price">79,000원 (판매중)</span></div>
-        <div class="sched-row next"><span>3차 판매가</span><span>99,000원 (인상예정)</span></div>
-        <div class="sched-row next"><span>4차 판매가</span><span>119,000원 (인상예정)</span></div>
-      </div>
-    </div>
-
-    <div class="trust-box">
-      <div class="icon">⚠️</div>
-      <p><b style="color:var(--text)">낚시용 자료가 아닙니다.</b><br>추가 결제를 유도하는 알맹이 없는 자료가 아닙니다. 솔직히 110만원에 팔아도 아깝지 않은 실전 대본만 담았습니다.</p>
-    </div>
-
-    <button type="button" class="lf-cta" id="go-product">지금 79,000원에 화법 선점하기</button>
-  </div>
-</section>
-
-<div class="page-loading" id="page-loading">로딩 중...</div>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="firebase-init.js"></script>
 
 <script>
-  document.getElementById('go-product').addEventListener('click', function(){
+(function(){
+  var chatBody = document.getElementById('chat-body');
+  var leadData = { name: '', email: '', phone: '' };
+  var authMode = 'login';
+
+  function esc(str){
+    var div = document.createElement('div');
+    div.textContent = str == null ? '' : str;
+    return div.innerHTML;
+  }
+
+  function wait(ms){ return new Promise(function(res){ setTimeout(res, ms); }); }
+  function scrollBottom(){ chatBody.scrollTop = chatBody.scrollHeight; }
+
+  function addRow(cls, el){
+    var row = document.createElement('div');
+    row.className = 'msg-row ' + cls;
+    row.appendChild(el);
+    chatBody.appendChild(row);
+    scrollBottom();
+    return row;
+  }
+
+  function botBubble(html){
+    var b = document.createElement('div');
+    b.className = 'bubble bot';
+    b.innerHTML = html;
+    return addRow('bot', b);
+  }
+
+  function userBubble(text){
+    var b = document.createElement('div');
+    b.className = 'bubble user';
+    b.textContent = text;
+    return addRow('user', b);
+  }
+
+  async function typingThen(html){
+    var dots = document.createElement('div');
+    dots.className = 'typing-bubble';
+    dots.innerHTML = '<span></span><span></span><span></span>';
+    var row = addRow('bot', dots);
+    await wait(650 + Math.random() * 450);
+    row.remove();
+    botBubble(html);
+    await wait(200);
+  }
+
+  function botImage(src, alt){
+    var wrap = document.createElement('div');
+    wrap.className = 'chat-img-wrap';
+    var img = document.createElement('img');
+    img.src = src; img.alt = alt; img.loading = 'lazy';
+    wrap.appendChild(img);
+    return addRow('bot', wrap);
+  }
+
+  function botYoutube(embedId, caption){
+    var wrap = document.createElement('div');
+    wrap.className = 'chat-yt-wrap';
+    wrap.innerHTML =
+      '<div class="yt-embed"><iframe src="https://www.youtube.com/embed/' + embedId + '" title="후기 영상" loading="lazy" allowfullscreen></iframe></div>' +
+      '<div class="yt-caption">' + caption + '</div>';
+    return addRow('bot', wrap);
+  }
+
+  function choiceRow(options){
+    return new Promise(function(resolve){
+      var wrap = document.createElement('div');
+      wrap.className = 'chat-choices';
+      options.forEach(function(opt){
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'chat-btn' + (opt.secondary ? ' secondary' : '');
+        btn.textContent = opt.label;
+        btn.addEventListener('click', function(){
+          wrap.remove();
+          userBubble(opt.echo || opt.label);
+          resolve(opt.value);
+        });
+        wrap.appendChild(btn);
+      });
+      chatBody.appendChild(wrap);
+      scrollBottom();
+    });
+  }
+
+  function inputCard(fields, buttonLabel){
+    return new Promise(function(resolve){
+      var card = document.createElement('div');
+      card.className = 'chat-input-card';
+      var inputs = {};
+      fields.forEach(function(f){
+        var inp = document.createElement('input');
+        inp.type = f.type || 'text';
+        inp.placeholder = f.placeholder;
+        card.appendChild(inp);
+        inputs[f.key] = inp;
+      });
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = buttonLabel;
+      function submit(){
+        var result = {};
+        var valid = true;
+        fields.forEach(function(f){
+          var v = inputs[f.key].value.trim();
+          if(!v) valid = false;
+          result[f.key] = v;
+        });
+        if(!valid){ return; }
+        card.remove();
+        var echoText = fields.map(function(f){ return result[f.key]; }).join(' / ');
+        userBubble(echoText);
+        resolve(result);
+      }
+      btn.addEventListener('click', submit);
+      fields.forEach(function(f){
+        inputs[f.key].addEventListener('keydown', function(e){
+          if(e.key === 'Enter'){ submit(); }
+        });
+      });
+      card.appendChild(btn);
+      addRow('bot', card);
+      scrollBottom();
+    });
+  }
+
+  var EBOOK_TITLES = [
+    '첫 만남 3초, 신뢰를 만드는 라포 형성법',
+    '가격 얘기가 두렵지 않아지는 질문법',
+    '"생각해볼게요"에 무너지지 않는 대응법',
+    '계약을 부르는 클로징 타이밍 체크리스트',
+    '고가상품이 오히려 더 쉬운 이유 (마인드셋)'
+  ];
+
+  function openAuthModal(){ document.getElementById('auth-overlay').classList.add('show'); }
+  function closeAuthModal(){ document.getElementById('auth-overlay').classList.remove('show'); }
+
+  function doPurchaseAndRedirect(user){
     document.getElementById('page-loading').classList.add('show');
-    setTimeout(function(){
-      window.location.href = 'product.html';
-    }, 550);
+    ensureOrder(user).then(function(){
+      window.location.href = 'mypage.html';
+    }).catch(function(err){
+      document.getElementById('page-loading').classList.remove('show');
+      alert('처리 중 오류가 발생했습니다: ' + err.message);
+    });
+  }
+
+  document.getElementById('auth-close').addEventListener('click', closeAuthModal);
+  document.querySelectorAll('.auth-tab').forEach(function(t){
+    t.addEventListener('click', function(){
+      document.querySelectorAll('.auth-tab').forEach(function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      authMode = t.getAttribute('data-mode');
+      document.getElementById('auth-submit-btn').textContent = authMode === 'login' ? '로그인하기' : '회원가입하기';
+      document.getElementById('auth-nickname-field').style.display = authMode === 'signup' ? 'block' : 'none';
+      document.getElementById('auth-msg').textContent = '';
+    });
   });
+
+  document.getElementById('google-login-btn').addEventListener('click', function(){
+    var provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider).then(function(){
+      closeAuthModal();
+    }).catch(function(err){
+      document.getElementById('auth-msg').textContent = '구글 로그인에 실패했습니다: ' + err.message;
+    });
+  });
+
+  document.getElementById('auth-submit-btn').addEventListener('click', function(){
+    var email = document.getElementById('auth-email').value.trim();
+    var pw = document.getElementById('auth-password').value;
+    var nickname = document.getElementById('auth-nickname').value.trim();
+    var msgEl = document.getElementById('auth-msg');
+    if(!email || !pw){
+      msgEl.textContent = '이메일과 비밀번호를 입력해주세요.';
+      return;
+    }
+    if(authMode === 'signup' && !nickname){
+      msgEl.textContent = '닉네임을 입력해주세요.';
+      return;
+    }
+    if(authMode === 'login'){
+      auth.signInWithEmailAndPassword(email, pw).then(function(){
+        closeAuthModal();
+      }).catch(function(err){
+        msgEl.textContent = err.message;
+      });
+      return;
+    }
+    auth.createUserWithEmailAndPassword(email, pw).then(function(cred){
+      return cred.user.updateProfile({ displayName: nickname });
+    }).then(function(){
+      closeAuthModal();
+    }).catch(function(err){
+      msgEl.textContent = err.message;
+    });
+  });
+
+  async function run(){
+    await typingThen('안녕하세요! 😊');
+    await typingThen('<b>고가상품 세일즈 화법</b> 무료 상담에 참여해주셔서 감사합니다.');
+    await typingThen('지금 참여하시면 실전 세일즈 화법 핵심을 정리한 <b>무료 자료 5가지</b>를 준비해드리고 있어요.');
+
+    var ebookCard = document.createElement('div');
+    ebookCard.className = 'ebook-list-card';
+    ebookCard.innerHTML = EBOOK_TITLES.map(function(t, i){
+      return '<div class="item"><span class="n">' + (i + 1) + '</span><span>' + esc(t) + '</span></div>';
+    }).join('');
+    addRow('bot', ebookCard);
+    await wait(500);
+
+    await typingThen('단, <b>고가상품이나 무형의 서비스를 팔아야 하는 분</b>께 맞춘 자료라서, 해당 없으신 분은 신청하지 않으셔도 괜찮아요.');
+    await typingThen('그래도 받아보시겠어요?');
+    await choiceRow([{ label: '네, 받아볼게요', value: true }]);
+
+    await typingThen('자료를 보내드리기 위해 몇 가지만 여쭤볼게요 🙋');
+    var nameRes = await inputCard([{ key: 'name', placeholder: '이름을 입력해주세요' }], '다음');
+    leadData.name = nameRes.name;
+    await typingThen('반갑습니다, <b>' + esc(leadData.name) + '</b>님!');
+
+    var emailRes = await inputCard([{ key: 'email', placeholder: '이메일 주소', type: 'email' }], '다음');
+    leadData.email = emailRes.email;
+
+    var phoneRes = await inputCard([{ key: 'phone', placeholder: '연락처 (- 없이 숫자만)', type: 'tel' }], '다음');
+    leadData.phone = phoneRes.phone;
+
+    await typingThen('입력하신 정보가 맞을까요? <br><span style="color:#e0435c;font-size:12px;">*오타가 있으면 자료를 받지 못하실 수 있어요</span>');
+    botBubble('이름: ' + esc(leadData.name) + '<br>이메일: ' + esc(leadData.email) + '<br>연락처: ' + esc(leadData.phone));
+    await choiceRow([{ label: '네, 맞아요', value: true }]);
+
+    if(typeof saveLead === 'function'){
+      saveLead(leadData).catch(function(e){ console.error(e); });
+    }
+
+    await typingThen('감사합니다! 자료는 순차적으로 정리해서 전달드릴게요 📩');
+    await wait(500);
+    await typingThen('앗, 잠시만요 ' + esc(leadData.name) + '님!');
+    await typingThen('받아보실 수 있는 <b>특별한 혜택</b>이 하나 더 있어요.');
+    await choiceRow([{ label: '어떤 혜택인가요?', value: true }]);
+
+    await typingThen('혹시 <b>고가상품을 파는 일</b>, 제대로 배워보고 싶으신 적 있으세요?');
+    await typingThen('저는 1:1 컨설팅으로 <b>단 한 번에 770만원</b>을 결제받은 적이 있어요.');
+    await typingThen('화려한 스펙도, 특별한 인맥도 없었어요. 있었던 건 <b>"먹히는 화법" 하나</b>뿐이었죠.');
+    await typingThen('20년 세일즈 경력, 1,000회 이상 컨설팅·강의를 통해 검증된 화법을 그대로 대본으로 정리했어요.');
+
+    botImage('reviews/revenue-2604.jpg', '2026년 4월 매출보고서');
+    await wait(400);
+    botBubble('실제 이 화법을 익힌 수강생의 매출 변화예요.<br><b>월 1,279만원 → 월 2,217만원</b> (10개월 만에 +73%)');
+    await wait(500);
+
+    await typingThen('실제 후기도 한 번 확인해보시겠어요?');
+    await choiceRow([{ label: '확인해볼게요', value: true }]);
+    botImage('reviews/review-3.jpg', '실제 후기 캡처');
+    await wait(300);
+    botYoutube('VB3mvG9EoJM', '"법인 계약 두 건을 혼자 성사, 월 300만원에서 월 3,000만원까지" — 신선생님');
+    await wait(500);
+
+    await typingThen('이 화법은 원래 1:1 컨설팅으로만 770만원에 전달했던 내용이에요.');
+    await typingThen('전자책으로 정리하면서 정가는 <b>1,100,000원</b>으로 책정했어요.');
+    await typingThen(esc(leadData.name) + '님께는, 지금 여기서만 훨씬 낮은 가격에 드릴게요.');
+
+    var priceCard = document.createElement('div');
+    priceCard.className = 'chat-price-card';
+    priceCard.innerHTML =
+      '<div class="original">정가 1,100,000원</div>' +
+      '<div><span class="final">79,000원</span><span class="badge">-93%</span></div>' +
+      '<div class="analogy">치킨 세 마리 값이면, 770만원짜리 노하우를 평생 소장하실 수 있어요.</div>' +
+      '<div class="warn">※ 이 혜택은 이 창을 나가면 다시 드릴 수 없어요.</div>';
+    addRow('bot', priceCard);
+    await wait(700);
+
+    await typingThen('구매 전에, 개인정보 수집 및 이용에 동의해주셔야 해요.');
+    var consentCard = document.createElement('div');
+    consentCard.className = 'chat-consent-card';
+    consentCard.innerHTML =
+      '<b>개인정보 수집 및 이용 안내</b><br>' +
+      '수집항목: 이름, 이메일, 연락처<br>' +
+      '수집목적: 무료자료 발송 및 구매 처리<br>' +
+      '보유기간: 수집일로부터 3년 (동의 철회 시 지체없이 파기)<br>' +
+      '수집주체: 아우라세일즈 평생교육원 (사업자등록번호 825-90-01995)<br>' +
+      '<label><input type="checkbox" id="consent-check"> 위 내용에 동의합니다</label>';
+    addRow('bot', consentCard);
+
+    await new Promise(function(resolve){
+      document.getElementById('consent-check').addEventListener('change', function(e){
+        if(e.target.checked){ resolve(); }
+      });
+    });
+    userBubble('동의합니다');
+
+    await typingThen(esc(leadData.name) + '님, 지금 바로 화법을 선점하시겠어요?');
+    await choiceRow([{ label: '네, 79,000원에 구매할게요', value: true }]);
+
+    await typingThen('좋아요! 로그인 후 바로 결제를 도와드릴게요 🙌');
+    await wait(300);
+
+    var unsub = auth.onAuthStateChanged(function(user){
+      if(user){
+        unsub();
+        closeAuthModal();
+        doPurchaseAndRedirect(user);
+      }
+    });
+    openAuthModal();
+  }
+
+  run();
+})();
 </script>
 
 </body>
