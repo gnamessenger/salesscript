@@ -53,7 +53,7 @@
 
     <div class="field" id="auth-nickname-field" style="display:none;">
       <label>닉네임</label>
-      <input type="text" id="auth-nickname" class="review-input" placeholder="리뷰·마이페이지에 표시될 이름" maxlength="20">
+      <input type="text" id="auth-nickname" class="review-input" placeholder="닉네임을 입력해주세요" maxlength="20">
     </div>
     <div class="field">
       <label>이메일</label>
@@ -236,26 +236,12 @@
     });
   });
 
-  var googleLoginInProgress = false;
   document.getElementById('google-login-btn').addEventListener('click', function(){
-    if(googleLoginInProgress){ return; }
-    googleLoginInProgress = true;
-    var btn = document.getElementById('google-login-btn');
-    btn.disabled = true;
+    sessionStorage.setItem('chatbot_pending_purchase', '1');
     var provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider).then(function(){
-      closeAuthModal();
-    }).catch(function(err){
-      if(err.code === 'auth/cancelled-popup-request' || err.code === 'auth/popup-closed-by-user'){
-        document.getElementById('auth-msg').textContent = '';
-      } else if(err.code === 'auth/popup-blocked'){
-        document.getElementById('auth-msg').textContent = '팝업이 차단되었어요. 브라우저 팝업 차단을 해제한 뒤 다시 눌러주세요.';
-      } else {
-        document.getElementById('auth-msg').textContent = '구글 로그인에 실패했습니다: ' + err.message;
-      }
-    }).finally(function(){
-      googleLoginInProgress = false;
-      btn.disabled = false;
+    auth.signInWithRedirect(provider).catch(function(err){
+      sessionStorage.removeItem('chatbot_pending_purchase');
+      document.getElementById('auth-msg').textContent = '구글 로그인에 실패했습니다: ' + err.message;
     });
   });
 
@@ -397,7 +383,17 @@
     openAuthModal();
   }
 
-  run();
+  auth.getRedirectResult().then(function(result){
+    if(result && result.user && sessionStorage.getItem('chatbot_pending_purchase') === '1'){
+      sessionStorage.removeItem('chatbot_pending_purchase');
+      doPurchaseAndRedirect(result.user);
+      return;
+    }
+    run();
+  }).catch(function(err){
+    console.error(err);
+    run();
+  });
 })();
 </script>
 
