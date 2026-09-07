@@ -32,6 +32,7 @@
     <div class="active" data-tab="content">내 컨텐츠</div>
     <div data-tab="orders">구매내역</div>
     <div data-tab="info">내 정보</div>
+    <div data-tab="store">🛒 스토어</div>
   </div>
 
   <div id="tab-content">
@@ -52,6 +53,14 @@
       <div class="meta" id="info-email">이메일: -</div>
     </div>
   </div>
+
+  <div id="tab-store" style="display:none;">
+    <div class="order-card">
+      <div class="pname">더 필요한 자료가 있으신가요?</div>
+      <div class="meta">아우라세일즈의 모든 자료를 한 곳에서 보고, 지금 갖고 계신 것과 묶어서 구매하시면 할인이 적용됩니다.</div>
+      <a href="store.html" class="download-btn">🛒 전체 상품 보러가기</a>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -63,6 +72,7 @@
       document.getElementById('tab-content').style.display = tab === 'content' ? 'block' : 'none';
       document.getElementById('tab-orders').style.display = tab === 'orders' ? 'block' : 'none';
       document.getElementById('tab-info').style.display = tab === 'info' ? 'block' : 'none';
+      document.getElementById('tab-store').style.display = tab === 'store' ? 'block' : 'none';
     });
   });
 </script>
@@ -169,7 +179,7 @@
       contentHtml += '<div class="order-card">' +
         '<div class="pname">더 담아보세요</div>' +
         '<div class="meta">아직 보유하지 않은 자료가 있어요. 2개 이상 담으면 묶음 할인이 적용됩니다.</div>' +
-        '<a href="product.html#buy" class="download-btn">🛒 추가 구매하러 가기</a>' +
+        '<a href="store.html" class="download-btn">🛒 추가 구매하러 가기</a>' +
         '</div>';
     }
 
