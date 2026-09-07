@@ -181,6 +181,7 @@ img,svg{max-width:100%;}
 .pain-row .icon{flex-shrink:0;font-size:18px;}
 .pain-row span:not(.icon){word-break:keep-all;overflow-wrap:break-word;}
 .pain-row b{color:var(--text);}
+.nowrap{white-space:nowrap;}
 
 .insight-card{
   margin-top:16px;
