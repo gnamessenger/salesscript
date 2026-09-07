@@ -796,6 +796,14 @@ footer{
   color:var(--gold);
   letter-spacing:.3px;
 }
+.growth-stat .growth-sub{
+  margin-top:8px;
+  font-size:15.5px;
+  font-weight:700;
+  color:#fff;
+  line-height:1.5;
+}
+.growth-stat .growth-sub b{color:var(--gold);}
 .growth-stat .row{
   display:flex;
   align-items:center;
