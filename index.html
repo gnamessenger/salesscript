@@ -216,7 +216,7 @@
 
   function doPurchaseAndRedirect(user){
     document.getElementById('page-loading').classList.add('show');
-    ensureOrder(user).then(function(){
+    ensureOrder(user, ['sales-script']).then(function(){
       window.location.href = 'mypage.html';
     }).catch(function(err){
       document.getElementById('page-loading').classList.remove('show');
