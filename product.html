@@ -198,32 +198,53 @@
 </div>
 
 <!-- PRICE -->
-<section class="price-section">
+<section class="price-section" id="buy">
   <div class="wrap">
     <div class="price-card">
-      <div class="pname">[대본집] 고가상품 세일즈 화법 완전정복</div>
-      <div class="original">정가 1,100,000원</div>
-      <div class="price-final-row">
-        <div class="final">79,000원</div>
-        <div class="badge">-93%</div>
+      <div class="pname">필요한 자료를 골라서 담아보세요</div>
+      <div class="price-note" style="margin:6px 0 0;">2개 이상 담으면 자동으로 묶음 할인이 적용됩니다.</div>
+
+      <div class="product-picker" id="product-picker">
+        <label class="product-option">
+          <input type="checkbox" class="po-check" value="sales" checked>
+          <div class="po-info">
+            <div class="po-name">고가상품 세일즈 화법 완전정복</div>
+            <div class="po-desc">1차+2차 미팅 대본 + 마법의 반론 제기 보너스 (즉시 다운로드)</div>
+          </div>
+          <div class="po-price">79,000원</div>
+        </label>
+
+        <label class="product-option">
+          <input type="checkbox" class="po-check" value="personal">
+          <div class="po-info">
+            <div class="po-name">개인 보험 자료집 <span class="po-badge">준비중</span></div>
+            <div class="po-desc">완성되는 대로 마이페이지에서 바로 받아보실 수 있어요</div>
+          </div>
+          <div class="po-price">59,000원</div>
+        </label>
+
+        <label class="product-option">
+          <input type="checkbox" class="po-check" value="corporate">
+          <div class="po-info">
+            <div class="po-name">법인 보험 자료집 <span class="po-badge">준비중</span></div>
+            <div class="po-desc">완성되는 대로 마이페이지에서 바로 받아보실 수 있어요</div>
+          </div>
+          <div class="po-price">59,000원</div>
+        </label>
       </div>
 
       <div class="price-lines">
         <div class="price-line">
-          <span>1차+2차 미팅 대본 통합 패키지</span>
-          <span>1,100,000원</span>
+          <span>선택한 상품 정가 합계</span>
+          <span id="price-full">79,000원</span>
         </div>
         <div class="price-line">
-          <span>총 금액</span>
-          <span>1,100,000원</span>
-        </div>
-        <div class="price-line">
-          <span>할인</span>
-          <span class="discount">-93% -1,021,000원</span>
+          <span>묶음 할인</span>
+          <span class="discount" id="price-discount">0원</span>
         </div>
         <div class="price-line total">
           <span>최종 구매 금액</span>
-          <span>79,000원</span>
+          <span id="price-total">79,000원</span>
         </div>
       </div>
 
@@ -399,8 +420,38 @@
     });
   });
 
+  // ---- 상품 선택 & 가격 계산 ----
+  function getSelectedProducts(){
+    var sel = [];
+    document.querySelectorAll('.po-check').forEach(function(cb){
+      if(cb.checked) sel.push(cb.value);
+    });
+    return sel;
+  }
+
+  function updatePriceUI(){
+    var sel = getSelectedProducts();
+    var full = sel.reduce(function(sum, id){ return sum + (PRODUCTS[id] ? PRODUCTS[id].price : 0); }, 0);
+    var total = calcComboPrice(sel);
+    var discount = full - total;
+    document.getElementById('price-full').textContent = full.toLocaleString() + '원';
+    document.getElementById('price-discount').textContent = (discount > 0 ? '-' : '') + discount.toLocaleString() + '원';
+    document.getElementById('price-total').textContent = total.toLocaleString() + '원';
+    var buyBtn = document.getElementById('buy-btn');
+    var stickyBtn = document.getElementById('sticky-buy-btn');
+    var label = sel.length ? total.toLocaleString() + '원 구매하기' : '상품을 선택해주세요';
+    buyBtn.textContent = label;
+    stickyBtn.textContent = label;
+    buyBtn.disabled = sel.length === 0;
+  }
+  document.querySelectorAll('.po-check').forEach(function(cb){
+    cb.addEventListener('change', updatePriceUI);
+  });
+  updatePriceUI();
+
   // ---- 구매하기 버튼 ----
   function handleBuyClick(){
+    if(getSelectedProducts().length === 0){ return; }
     var user = auth.currentUser;
     if(!user){
       pendingAction = 'buy';
@@ -419,7 +470,7 @@
 
   function doPurchaseAndRedirect(user){
     document.getElementById('page-loading').classList.add('show');
-    ensureOrder(user).then(function(){
+    ensureOrder(user, getSelectedProducts()).then(function(){
       window.location.href = 'mypage.html';
     }).catch(function(err){
       document.getElementById('page-loading').classList.remove('show');

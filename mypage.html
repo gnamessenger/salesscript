@@ -86,6 +86,30 @@
     });
   });
 
+  var CONTENT_CARDS = {
+    sales: function(){
+      return '<div class="order-card">' +
+        '<div class="pname">고가상품 세일즈 화법 완전정복</div>' +
+        '<div class="meta">기간 제한 없음</div>' +
+        '<a href="ebook-main.pdf" download class="download-btn">📖 대본집 전자책 다운로드 (1차+2차 통합)</a>' +
+        '<a href="product.html#review" class="download-btn" style="background:var(--red);">🎁 후기 남기면 반론 스크립트 드려요</a>' +
+        '</div>';
+    },
+    personal: function(){
+      return '<div class="order-card">' +
+        '<div class="pname">개인 보험 자료집 <span class="po-badge">준비중</span></div>' +
+        '<div class="meta">현재 정리 중인 자료입니다. 완성되는 대로 이 페이지에서 바로 다운로드하실 수 있도록 안내드릴게요.</div>' +
+        '</div>';
+    },
+    corporate: function(){
+      return '<div class="order-card">' +
+        '<div class="pname">법인 보험 자료집 <span class="po-badge">준비중</span></div>' +
+        '<div class="meta">현재 정리 중인 자료입니다. 완성되는 대로 이 페이지에서 바로 다운로드하실 수 있도록 안내드릴게요.</div>' +
+        '</div>';
+    }
+  };
+  var PRODUCT_ORDER = ['sales', 'personal', 'corporate'];
+
   function renderOrders(docs){
     var ordersEl = document.getElementById('orders-list');
     var contentEl = document.getElementById('content-list');
@@ -96,30 +120,38 @@
       return;
     }
 
-    var ordersHtml = '';
-    var contentHtml = '';
-    docs.forEach(function(doc){
-      var d = doc.data();
-      var dateStr = '';
-      if(d.createdAt && d.createdAt.toDate){
-        var dt = d.createdAt.toDate();
-        dateStr = dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + String(dt.getDate()).padStart(2,'0') +
-          ' ' + String(dt.getHours()).padStart(2,'0') + ':' + String(dt.getMinutes()).padStart(2,'0');
-      }
-      ordersHtml += '<div class="order-card">' +
-        '<div class="pname">' + d.productName + '</div>' +
-        '<div class="meta">주문일시: ' + (dateStr || '-') + '</div>' +
-        '<div class="meta">결제금액: ' + (d.amount || 0).toLocaleString() + '원</div>' +
-        '<div class="status">' + (d.status === 'completed' ? '결제완료' : d.status) + '</div>' +
-        '</div>';
+    var d = docs[0].data();
+    var owned = d.products || (d.productName ? ['sales'] : []);
+    var dateStr = '';
+    if(d.createdAt && d.createdAt.toDate){
+      var dt = d.createdAt.toDate();
+      dateStr = dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + String(dt.getDate()).padStart(2,'0') +
+        ' ' + String(dt.getHours()).padStart(2,'0') + ':' + String(dt.getMinutes()).padStart(2,'0');
+    }
 
-      contentHtml += '<div class="order-card">' +
-        '<div class="pname">' + d.productName + '</div>' +
-        '<div class="meta">기간 제한 없음</div>' +
-        '<a href="ebook-main.pdf" download class="download-btn">📖 대본집 전자책 다운로드 (1차+2차 통합)</a>' +
-        '<a href="product.html#review" class="download-btn" style="background:var(--red);">🎁 후기 남기면 반론 스크립트 드려요</a>' +
-        '</div>';
+    var ordersHtml = '<div class="order-card">' +
+      '<div class="pname">' + (d.productName || '') + '</div>' +
+      '<div class="meta">주문일시: ' + (dateStr || '-') + '</div>' +
+      '<div class="meta">결제금액: ' + (d.amount || 0).toLocaleString() + '원</div>' +
+      '<div class="status">' + (d.status === 'completed' ? '결제완료' : d.status) + '</div>' +
+      '</div>';
+
+    var contentHtml = '';
+    PRODUCT_ORDER.forEach(function(id){
+      if(owned.indexOf(id) !== -1 && CONTENT_CARDS[id]){
+        contentHtml += CONTENT_CARDS[id]();
+      }
     });
+
+    var missing = PRODUCT_ORDER.filter(function(id){ return owned.indexOf(id) === -1; });
+    if(missing.length){
+      contentHtml += '<div class="order-card">' +
+        '<div class="pname">더 담아보세요</div>' +
+        '<div class="meta">아직 보유하지 않은 자료가 있어요. 2개 이상 담으면 묶음 할인이 적용됩니다.</div>' +
+        '<a href="product.html#buy" class="download-btn">🛒 추가 구매하러 가기</a>' +
+        '</div>';
+    }
+
     ordersEl.innerHTML = ordersHtml;
     contentEl.innerHTML = contentHtml;
   }
