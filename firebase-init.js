@@ -39,20 +39,69 @@ function getBundlePrice(itemIds){
 var PRODUCT_NAME = PRODUCT_LABEL['sales-script'];
 var PRODUCT_AMOUNT = STANDALONE_PRICE['sales-script'];
 
-function ensureOrder(user, itemIds){
+// 첫 구매 완료 시 발급되는 쿠폰 (8만원 이상 구매 시 사용 가능, 유효기간 없음)
+var FIRST_PURCHASE_COUPON = { amount: 20000, minAmount: 80000 };
+
+function issueFirstPurchaseCoupon(uid){
+  var couponsRef = db.collection('coupons');
+  return couponsRef.where('uid', '==', uid).limit(1).get().then(function(snap){
+    if(!snap.empty){ return; } // 이미 쿠폰을 받은 적 있으면 중복 발급하지 않음
+    return couponsRef.add({
+      uid: uid,
+      amount: FIRST_PURCHASE_COUPON.amount,
+      minAmount: FIRST_PURCHASE_COUPON.minAmount,
+      used: false,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  });
+}
+
+// 사용 가능한(미사용) 쿠폰 1개 조회
+function getAvailableCoupon(uid){
+  return db.collection('coupons').where('uid', '==', uid).where('used', '==', false).limit(1).get()
+    .then(function(snap){
+      if(snap.empty) return null;
+      var doc = snap.docs[0];
+      var d = doc.data();
+      d.id = doc.id;
+      return d;
+    });
+}
+
+function useCoupon(couponId){
+  return db.collection('coupons').doc(couponId).update({
+    used: true,
+    usedAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+}
+
+function ensureOrder(user, itemIds, couponId){
   var sortedItems = (itemIds && itemIds.length) ? itemIds.slice().sort() : ['sales-script'];
   var amount = getBundlePrice(sortedItems);
   var productName = sortedItems.map(function(id){ return PRODUCT_LABEL[id]; }).join(' + ');
   var ordersRef = db.collection('orders');
-  return ordersRef.add({
-    uid: user.uid,
-    email: user.email,
-    items: sortedItems,
-    productName: productName,
-    amount: amount,
-    status: 'completed',
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  }).then(function(ref){ return ref.get(); });
+  return ordersRef.where('uid', '==', user.uid).limit(1).get().then(function(existingSnap){
+    var isFirstPurchase = existingSnap.empty;
+    var couponDiscount = 0;
+    var couponPromise = couponId ? useCoupon(couponId).then(function(){ couponDiscount = FIRST_PURCHASE_COUPON.amount; }) : Promise.resolve();
+    return couponPromise.then(function(){
+      return ordersRef.add({
+        uid: user.uid,
+        email: user.email,
+        items: sortedItems,
+        productName: productName,
+        amount: Math.max(0, amount - couponDiscount),
+        couponDiscount: couponDiscount,
+        status: 'completed',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }).then(function(ref){
+      if(isFirstPurchase){
+        issueFirstPurchaseCoupon(user.uid);
+      }
+      return ref.get();
+    });
+  });
 }
 
 function hasPurchased(uid){

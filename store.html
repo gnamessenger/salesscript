@@ -65,6 +65,11 @@
   </div>
 
   <div class="store-summary" id="store-summary">
+    <label class="coupon-box" id="coupon-box" style="display:none;">
+      <input type="checkbox" id="coupon-check">
+      <span id="coupon-label">🎟️ 20,000원 쿠폰 사용하기 (8만원 이상 구매 시)</span>
+    </label>
+
     <div class="price-lines">
       <div class="price-line">
         <span>선택 상품 정가 합계</span>
@@ -73,6 +78,10 @@
       <div class="price-line" id="price-discount-line" style="display:none;">
         <span>묶음 할인</span>
         <span class="discount" id="price-discount">-0원</span>
+      </div>
+      <div class="price-line" id="coupon-discount-line" style="display:none;">
+        <span>쿠폰 할인</span>
+        <span class="discount" id="coupon-discount">-20,000원</span>
       </div>
       <div class="price-line total">
         <span>최종 구매 금액</span>
@@ -205,9 +214,16 @@
   });
 
   // ---- 상품 선택 & 가격 계산 ----
+  var currentCoupon = null; // 로그인 후 채워짐: { id, amount, minAmount, used }
+
   function getSelectedItems(){
     return Array.prototype.slice.call(document.querySelectorAll('.store-cb:checked'))
       .map(function(cb){ return cb.value; }).sort();
+  }
+
+  function isCouponApplied(){
+    var cb = document.getElementById('coupon-check');
+    return !!(currentCoupon && cb && cb.checked);
   }
 
   function updatePriceDisplay(){
@@ -215,6 +231,9 @@
     var sumEl = document.getElementById('price-sum');
     var discountLine = document.getElementById('price-discount-line');
     var discountEl = document.getElementById('price-discount');
+    var couponBox = document.getElementById('coupon-box');
+    var couponDiscountLine = document.getElementById('coupon-discount-line');
+    var couponDiscountEl = document.getElementById('coupon-discount');
     var finalEl = document.getElementById('price-final');
     var buyBtn = document.getElementById('buy-btn');
     var stickyBtn = document.getElementById('sticky-buy-btn');
@@ -227,6 +246,8 @@
     if(items.length === 0){
       sumEl.textContent = '0원';
       discountLine.style.display = 'none';
+      couponBox.style.display = 'none';
+      couponDiscountLine.style.display = 'none';
       finalEl.textContent = '0원';
       buyBtn.disabled = true;
       buyBtn.textContent = '상품을 선택해주세요';
@@ -234,15 +255,32 @@
       return;
     }
     var sum = items.reduce(function(acc, id){ return acc + STANDALONE_PRICE[id]; }, 0);
-    var finalPrice = getBundlePrice(items);
+    var bundlePrice = getBundlePrice(items);
     sumEl.textContent = sum.toLocaleString() + '원';
-    finalEl.textContent = finalPrice.toLocaleString() + '원';
-    if(finalPrice < sum){
+    if(bundlePrice < sum){
       discountLine.style.display = 'flex';
-      discountEl.textContent = '-' + (sum - finalPrice).toLocaleString() + '원';
+      discountEl.textContent = '-' + (sum - bundlePrice).toLocaleString() + '원';
     } else {
       discountLine.style.display = 'none';
     }
+
+    // 쿠폰 노출 여부: 미사용 쿠폰이 있고, 묶음가가 최소금액 이상일 때만
+    var couponUsable = currentCoupon && bundlePrice >= currentCoupon.minAmount;
+    couponBox.style.display = couponUsable ? 'flex' : 'none';
+    if(!couponUsable){
+      document.getElementById('coupon-check').checked = false;
+    }
+
+    var finalPrice = bundlePrice;
+    if(couponUsable && isCouponApplied()){
+      finalPrice = Math.max(0, bundlePrice - currentCoupon.amount);
+      couponDiscountLine.style.display = 'flex';
+      couponDiscountEl.textContent = '-' + currentCoupon.amount.toLocaleString() + '원';
+    } else {
+      couponDiscountLine.style.display = 'none';
+    }
+
+    finalEl.textContent = finalPrice.toLocaleString() + '원';
     buyBtn.disabled = false;
     var label = finalPrice.toLocaleString() + '원 구매하기';
     buyBtn.textContent = label;
@@ -251,7 +289,19 @@
   document.querySelectorAll('.store-cb').forEach(function(cb){
     cb.addEventListener('change', updatePriceDisplay);
   });
+  document.getElementById('coupon-check').addEventListener('change', updatePriceDisplay);
   updatePriceDisplay();
+
+  function loadCouponFor(user){
+    getAvailableCoupon(user.uid).then(function(coupon){
+      currentCoupon = coupon;
+      if(coupon){
+        document.getElementById('coupon-label').textContent =
+          '🎟️ ' + coupon.amount.toLocaleString() + '원 쿠폰 사용하기 (' + coupon.minAmount.toLocaleString() + '원 이상 구매 시)';
+      }
+      updatePriceDisplay();
+    }).catch(function(err){ console.error(err); });
+  }
 
   // ---- 구매하기 ----
   function handleBuyClick(){
@@ -263,14 +313,14 @@
       openAuthModal();
       return;
     }
-    doPurchaseAndRedirect(user, items);
+    doPurchaseAndRedirect(user, items, isCouponApplied() ? currentCoupon.id : null);
   }
   document.getElementById('buy-btn').addEventListener('click', handleBuyClick);
   document.getElementById('sticky-buy-btn').addEventListener('click', handleBuyClick);
 
-  function doPurchaseAndRedirect(user, items){
+  function doPurchaseAndRedirect(user, items, couponId){
     document.getElementById('page-loading').classList.add('show');
-    ensureOrder(user, items).then(function(){
+    ensureOrder(user, items, couponId).then(function(){
       window.location.href = 'mypage.html';
     }).catch(function(err){
       document.getElementById('page-loading').classList.remove('show');
@@ -287,7 +337,9 @@
   }).catch(function(err){ console.error(err); });
 
   auth.onAuthStateChanged(function(user){
-    if(user && pendingAction === 'buy'){
+    if(!user){ return; }
+    loadCouponFor(user);
+    if(pendingAction === 'buy'){
       pendingAction = null;
       doPurchaseAndRedirect(user, getSelectedItems());
     }
