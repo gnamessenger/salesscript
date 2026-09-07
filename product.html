@@ -201,54 +201,52 @@
 <section class="price-section" id="buy">
   <div class="wrap">
     <div class="price-card">
-      <div class="pname">필요한 자료를 골라서 담아보세요</div>
+      <div class="pname">구매하실 상품을 선택하세요 (중복 선택 가능)</div>
       <div class="price-note" style="margin:6px 0 0;">2개 이상 담으면 자동으로 묶음 할인이 적용됩니다.</div>
 
-      <div class="product-picker" id="product-picker">
-        <label class="product-option">
-          <input type="checkbox" class="po-check" value="sales" checked>
-          <div class="po-info">
-            <div class="po-name">고가상품 세일즈 화법 완전정복</div>
-            <div class="po-desc">1차+2차 미팅 대본 + 마법의 반론 제기 보너스 (즉시 다운로드)</div>
+      <div class="product-pick-list" id="product-pick-list">
+        <label class="product-pick-item">
+          <input type="checkbox" class="product-pick-cb" value="sales-script" checked>
+          <div class="ppi-info">
+            <span class="ppi-name">고가상품 세일즈 화법 완전정복</span>
+            <span class="ppi-desc">1차+2차 미팅 대본 + 마법의 반론 제기 보너스 (즉시 다운로드)</span>
           </div>
-          <div class="po-price">79,000원</div>
+          <span class="ppi-price">79,000원</span>
         </label>
-
-        <label class="product-option">
-          <input type="checkbox" class="po-check" value="personal">
-          <div class="po-info">
-            <div class="po-name">개인 보험 자료집 <span class="po-badge">준비중</span></div>
-            <div class="po-desc">완성되는 대로 마이페이지에서 바로 받아보실 수 있어요</div>
+        <label class="product-pick-item">
+          <input type="checkbox" class="product-pick-cb" value="insurance-personal">
+          <div class="ppi-info">
+            <span class="ppi-name">보험 판매 화법 (개인) <span class="po-badge">준비중</span></span>
+            <span class="ppi-desc">완성되는 대로 마이페이지에서 바로 받아보실 수 있어요</span>
           </div>
-          <div class="po-price">59,000원</div>
+          <span class="ppi-price">59,000원</span>
         </label>
-
-        <label class="product-option">
-          <input type="checkbox" class="po-check" value="corporate">
-          <div class="po-info">
-            <div class="po-name">법인 보험 자료집 <span class="po-badge">준비중</span></div>
-            <div class="po-desc">완성되는 대로 마이페이지에서 바로 받아보실 수 있어요</div>
+        <label class="product-pick-item">
+          <input type="checkbox" class="product-pick-cb" value="insurance-corporate">
+          <div class="ppi-info">
+            <span class="ppi-name">보험 판매 화법 (법인) <span class="po-badge">준비중</span></span>
+            <span class="ppi-desc">완성되는 대로 마이페이지에서 바로 받아보실 수 있어요</span>
           </div>
-          <div class="po-price">59,000원</div>
+          <span class="ppi-price">59,000원</span>
         </label>
       </div>
 
       <div class="price-lines">
         <div class="price-line">
-          <span>선택한 상품 정가 합계</span>
-          <span id="price-full">79,000원</span>
+          <span>선택 상품 정가 합계</span>
+          <span id="price-sum">79,000원</span>
         </div>
-        <div class="price-line">
+        <div class="price-line" id="price-discount-line" style="display:none;">
           <span>묶음 할인</span>
-          <span class="discount" id="price-discount">0원</span>
+          <span class="discount" id="price-discount">-0원</span>
         </div>
         <div class="price-line total">
           <span>최종 구매 금액</span>
-          <span id="price-total">79,000원</span>
+          <span id="price-final">79,000원</span>
         </div>
       </div>
 
-      <button type="button" id="buy-btn" class="buy-btn">구매하기</button>
+      <button type="button" id="buy-btn" class="buy-btn">선택 상품 구매하기</button>
       <div class="price-note">※ 지금은 테스트 단계로, 실제 결제 없이 로그인만으로 구매 흐름을 체험하실 수 있습니다.</div>
     </div>
   </div>
@@ -380,10 +378,12 @@
   });
 
   document.getElementById('google-login-btn').addEventListener('click', function(){
+    if(pendingAction === 'buy'){
+      sessionStorage.setItem('salesscript_pending_items', JSON.stringify(getSelectedItems()));
+    }
     var provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider).then(function(){
-      closeAuthModal();
-    }).catch(function(err){
+    auth.signInWithRedirect(provider).catch(function(err){
+      sessionStorage.removeItem('salesscript_pending_items');
       document.getElementById('auth-msg').textContent = '구글 로그인에 실패했습니다: ' + err.message;
     });
   });
@@ -421,44 +421,61 @@
   });
 
   // ---- 상품 선택 & 가격 계산 ----
-  function getSelectedProducts(){
-    var sel = [];
-    document.querySelectorAll('.po-check').forEach(function(cb){
-      if(cb.checked) sel.push(cb.value);
-    });
-    return sel;
+  function getSelectedItems(){
+    return Array.prototype.slice.call(document.querySelectorAll('.product-pick-cb:checked'))
+      .map(function(cb){ return cb.value; }).sort();
   }
 
-  function updatePriceUI(){
-    var sel = getSelectedProducts();
-    var full = sel.reduce(function(sum, id){ return sum + (PRODUCTS[id] ? PRODUCTS[id].price : 0); }, 0);
-    var total = calcComboPrice(sel);
-    var discount = full - total;
-    document.getElementById('price-full').textContent = full.toLocaleString() + '원';
-    document.getElementById('price-discount').textContent = (discount > 0 ? '-' : '') + discount.toLocaleString() + '원';
-    document.getElementById('price-total').textContent = total.toLocaleString() + '원';
+  function updatePriceDisplay(){
+    var items = getSelectedItems();
+    var sumEl = document.getElementById('price-sum');
+    var discountLine = document.getElementById('price-discount-line');
+    var discountEl = document.getElementById('price-discount');
+    var finalEl = document.getElementById('price-final');
     var buyBtn = document.getElementById('buy-btn');
     var stickyBtn = document.getElementById('sticky-buy-btn');
-    var label = sel.length ? total.toLocaleString() + '원 구매하기' : '상품을 선택해주세요';
+
+    if(items.length === 0){
+      sumEl.textContent = '0원';
+      discountLine.style.display = 'none';
+      finalEl.textContent = '0원';
+      buyBtn.disabled = true;
+      buyBtn.textContent = '상품을 선택해주세요';
+      stickyBtn.textContent = '상품을 선택해주세요';
+      return;
+    }
+    var sum = items.reduce(function(acc, id){ return acc + STANDALONE_PRICE[id]; }, 0);
+    var finalPrice = getBundlePrice(items);
+    sumEl.textContent = sum.toLocaleString() + '원';
+    finalEl.textContent = finalPrice.toLocaleString() + '원';
+    if(finalPrice < sum){
+      discountLine.style.display = 'flex';
+      discountEl.textContent = '-' + (sum - finalPrice).toLocaleString() + '원';
+    } else {
+      discountLine.style.display = 'none';
+    }
+    buyBtn.disabled = false;
+    var label = finalPrice.toLocaleString() + '원 구매하기';
     buyBtn.textContent = label;
     stickyBtn.textContent = label;
-    buyBtn.disabled = sel.length === 0;
   }
-  document.querySelectorAll('.po-check').forEach(function(cb){
-    cb.addEventListener('change', updatePriceUI);
+
+  document.querySelectorAll('.product-pick-cb').forEach(function(cb){
+    cb.addEventListener('change', updatePriceDisplay);
   });
-  updatePriceUI();
+  updatePriceDisplay();
 
   // ---- 구매하기 버튼 ----
   function handleBuyClick(){
-    if(getSelectedProducts().length === 0){ return; }
+    var items = getSelectedItems();
+    if(items.length === 0){ return; }
     var user = auth.currentUser;
     if(!user){
       pendingAction = 'buy';
       openAuthModal();
       return;
     }
-    doPurchaseAndRedirect(user);
+    doPurchaseAndRedirect(user, items);
   }
   document.getElementById('buy-btn').addEventListener('click', handleBuyClick);
   document.getElementById('sticky-buy-btn').addEventListener('click', handleBuyClick);
@@ -468,15 +485,24 @@
     openAuthModal();
   });
 
-  function doPurchaseAndRedirect(user){
+  function doPurchaseAndRedirect(user, items){
     document.getElementById('page-loading').classList.add('show');
-    ensureOrder(user, getSelectedProducts()).then(function(){
+    ensureOrder(user, items).then(function(){
       window.location.href = 'mypage.html';
     }).catch(function(err){
       document.getElementById('page-loading').classList.remove('show');
       alert('처리 중 오류가 발생했습니다: ' + err.message);
     });
   }
+
+  // ---- 구글 로그인 리다이렉트 복귀 시 대기 중이던 구매 이어가기 ----
+  auth.getRedirectResult().then(function(result){
+    var pendingItemsRaw = sessionStorage.getItem('salesscript_pending_items');
+    if(result && result.user && pendingItemsRaw){
+      sessionStorage.removeItem('salesscript_pending_items');
+      doPurchaseAndRedirect(result.user, JSON.parse(pendingItemsRaw));
+    }
+  }).catch(function(err){ console.error(err); });
 
   // ---- 로그인 상태에 따른 리뷰 작성 권한 ----
   var currentUserHasPurchased = false;
@@ -489,7 +515,7 @@
     }
     if(pendingAction === 'buy'){
       pendingAction = null;
-      doPurchaseAndRedirect(user);
+      doPurchaseAndRedirect(user, getSelectedItems());
       return;
     }
     if(user.displayName && !document.getElementById('review-name').value){

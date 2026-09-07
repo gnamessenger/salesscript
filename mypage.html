@@ -113,30 +113,58 @@
       return;
     }
 
-    var d = docs[0].data();
-    var owned = d.products || (d.productName ? ['sales'] : []);
-    var dateStr = '';
-    if(d.createdAt && d.createdAt.toDate){
-      var dt = d.createdAt.toDate();
-      dateStr = dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + String(dt.getDate()).padStart(2,'0') +
-        ' ' + String(dt.getHours()).padStart(2,'0') + ':' + String(dt.getMinutes()).padStart(2,'0');
-    }
+    var CONTENT_INFO = {
+      'sales-script': {
+        name: '[대본집] 고가상품 세일즈 화법 완전정복',
+        download: 'ebook-main.pdf',
+        downloadLabel: '📖 대본집 전자책 다운로드 (1차+2차 통합)',
+        reviewCta: true
+      },
+      'insurance-personal': { name: '보험 판매 화법 (개인)', download: null },
+      'insurance-corporate': { name: '보험 판매 화법 (법인)', download: null }
+    };
 
-    var ordersHtml = '<div class="order-card">' +
-      '<div class="pname">' + (d.productName || '') + '</div>' +
-      '<div class="meta">주문일시: ' + (dateStr || '-') + '</div>' +
-      '<div class="meta">결제금액: ' + (d.amount || 0).toLocaleString() + '원</div>' +
-      '<div class="status">' + (d.status === 'completed' ? '결제완료' : d.status) + '</div>' +
-      '</div>';
+    var ordersHtml = '';
+    var ownedItems = {};
+    docs.forEach(function(doc){
+      var d = doc.data();
+      var dateStr = '';
+      if(d.createdAt && d.createdAt.toDate){
+        var dt = d.createdAt.toDate();
+        dateStr = dt.getFullYear() + '-' + String(dt.getMonth()+1).padStart(2,'0') + '-' + String(dt.getDate()).padStart(2,'0') +
+          ' ' + String(dt.getHours()).padStart(2,'0') + ':' + String(dt.getMinutes()).padStart(2,'0');
+      }
+      ordersHtml += '<div class="order-card">' +
+        '<div class="pname">' + (d.productName || '') + '</div>' +
+        '<div class="meta">주문일시: ' + (dateStr || '-') + '</div>' +
+        '<div class="meta">결제금액: ' + (d.amount || 0).toLocaleString() + '원</div>' +
+        '<div class="status">' + (d.status === 'completed' ? '결제완료' : d.status) + '</div>' +
+        '</div>';
+
+      var items = d.items && d.items.length ? d.items : ['sales-script'];
+      items.forEach(function(id){ ownedItems[id] = true; });
+    });
+    ordersEl.innerHTML = ordersHtml;
 
     var contentHtml = '';
-    PRODUCT_ORDER.forEach(function(id){
-      if(owned.indexOf(id) !== -1 && CONTENT_CARDS[id]){
-        contentHtml += CONTENT_CARDS[id]();
+    Object.keys(ownedItems).forEach(function(id){
+      var info = CONTENT_INFO[id];
+      if(!info){ return; }
+      contentHtml += '<div class="order-card">' +
+        '<div class="pname">' + info.name + '</div>' +
+        '<div class="meta">기간 제한 없음</div>';
+      if(info.download){
+        contentHtml += '<a href="' + info.download + '" download class="download-btn">' + info.downloadLabel + '</a>';
+      } else {
+        contentHtml += '<div class="meta" style="margin-top:10px;color:var(--red);font-weight:700;">자료 준비 중입니다. 곧 이메일로 전달드릴게요.</div>';
       }
+      if(info.reviewCta){
+        contentHtml += '<a href="product.html#review" class="download-btn" style="background:var(--red);">🎁 후기 남기면 반론 스크립트 드려요</a>';
+      }
+      contentHtml += '</div>';
     });
 
-    var missing = PRODUCT_ORDER.filter(function(id){ return owned.indexOf(id) === -1; });
+    var missing = Object.keys(CONTENT_INFO).filter(function(id){ return !ownedItems[id]; });
     if(missing.length){
       contentHtml += '<div class="order-card">' +
         '<div class="pname">더 담아보세요</div>' +
@@ -145,8 +173,7 @@
         '</div>';
     }
 
-    ordersEl.innerHTML = ordersHtml;
-    contentEl.innerHTML = contentHtml;
+    contentEl.innerHTML = contentHtml || '<div class="empty-state">보유 중인 컨텐츠가 없습니다.</div>';
   }
 
   auth.onAuthStateChanged(function(user){
