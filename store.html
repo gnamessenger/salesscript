@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>아우라세일즈 전자책 스토어</title>
+<meta name="description" content="아우라세일즈의 모든 세일즈 화법 자료를 한 곳에서 확인하고 구매하세요.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ STORE: 전체 상품 허브 ============ -->
+
+<div class="seller-bar">
+  <div class="wrap">
+    <div class="logo">S</div>
+    <div class="name">아우라세일즈 스토어</div>
+  </div>
+</div>
+
+<section class="store-hero">
+  <div class="wrap">
+    <h1>말 한마디로<br>계약을 만드는 화법들</h1>
+    <p class="sub">20년 세일즈 경력, 1,000회 이상 컨설팅·강의를 통해 검증된 자료를 한 곳에서 골라 담으세요.</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="store-list" id="store-list">
+    <label class="store-item">
+      <input type="checkbox" class="store-cb" value="sales-script" checked>
+      <div class="si-body">
+        <div class="si-top">
+          <span class="si-name">고가상품 세일즈 화법 완전정복</span>
+          <span class="si-price">79,000원</span>
+        </div>
+        <div class="si-desc">1:1 컨설팅 770만원에 판매된 실전 대본. 1차 니즈파악부터 2차 클로징까지, 그대로 읽기만 해도 되는 화법 + 마법의 반론 제기 보너스.</div>
+        <a href="product.html" class="si-link" onclick="event.stopPropagation();">상세페이지 보기 ›</a>
+      </div>
+    </label>
+
+    <label class="store-item">
+      <input type="checkbox" class="store-cb" value="insurance-personal">
+      <div class="si-body">
+        <div class="si-top">
+          <span class="si-name">보험 판매 화법 (개인) <span class="po-badge">준비중</span></span>
+          <span class="si-price">59,000원</span>
+        </div>
+        <div class="si-desc">개인 고객 대상 보험 상담·클로징에 특화된 화법 자료집. 완성되는 대로 마이페이지에서 바로 받아보실 수 있습니다.</div>
+      </div>
+    </label>
+
+    <label class="store-item">
+      <input type="checkbox" class="store-cb" value="insurance-corporate">
+      <div class="si-body">
+        <div class="si-top">
+          <span class="si-name">보험 판매 화법 (법인) <span class="po-badge">준비중</span></span>
+          <span class="si-price">59,000원</span>
+        </div>
+        <div class="si-desc">법인 계약 상담에 특화된 화법 자료집. 완성되는 대로 마이페이지에서 바로 받아보실 수 있습니다.</div>
+      </div>
+    </label>
+  </div>
+
+  <div class="store-summary" id="store-summary">
+    <div class="price-lines">
+      <div class="price-line">
+        <span>선택 상품 정가 합계</span>
+        <span id="price-sum">79,000원</span>
+      </div>
+      <div class="price-line" id="price-discount-line" style="display:none;">
+        <span>묶음 할인</span>
+        <span class="discount" id="price-discount">-0원</span>
+      </div>
+      <div class="price-line total">
+        <span>최종 구매 금액</span>
+        <span id="price-final">79,000원</span>
+      </div>
+    </div>
+    <button type="button" id="buy-btn" class="buy-btn">79,000원 구매하기</button>
+    <div class="price-note">※ 지금은 테스트 단계로, 실제 결제 없이 로그인만으로 구매 흐름을 체험하실 수 있습니다.</div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="seller-info">
+      <b>아우라세일즈 평생교육원</b> | 대표: 조혜영<br>
+      사업자등록번호: 825-90-01995 | 통신판매업신고번호: 제2025-화성매송-0003호<br>
+      주소: 화성시 매송고색로 366, 205호<br>
+      전화: 010-4242-9810 | 이메일: aurasalesedu@gmail.com<br><br>
+      본 페이지는 테스트(사전예약) 단계이며, 실제 결제는 정식 오픈 시 별도 안내됩니다.<br>
+      상품 정보, 거래에 관한 모든 책임은 판매자에게 있습니다.
+    </div>
+  </div>
+</footer>
+
+<div class="sticky-cta">
+  <button type="button" id="sticky-buy-btn">79,000원 구매하기</button>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="auth-overlay" id="auth-overlay">
+  <div class="auth-modal">
+    <div class="auth-close" id="auth-close">✕</div>
+    <h3>로그인하고 계속하기</h3>
+    <p class="sub">구매 처리를 위해 로그인이 필요합니다</p>
+
+    <button type="button" class="google-btn" id="google-login-btn">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.4 29.3 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.3 1 7.3 2.7l6-6C33.5 6.5 29 4.5 24 4.5 13.2 4.5 4.5 13.2 4.5 24S13.2 43.5 24 43.5 43.5 34.8 43.5 24c0-1.2-.1-2.4-.3-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 16 19 13 24 13c2.8 0 5.3 1 7.3 2.7l6-6C33.5 6.5 29 4.5 24 4.5c-7.6 0-14.1 4.3-17.4 10.6z"/><path fill="#4CAF50" d="M24 43.5c5.2 0 9.9-1.7 13.5-4.8l-6.2-5.3C29.3 35 26.8 36 24 36c-5.2 0-9.6-2.6-11.3-7l-6.6 5.1C9.8 39 16.4 43.5 24 43.5z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.5l6.2 5.3C40.5 36.5 43.5 30.7 43.5 24c0-1.2-.1-2.4-.3-3.5z"/></svg>
+      Google로 계속하기
+    </button>
+
+    <div class="auth-divider">또는 이메일로</div>
+
+    <div class="auth-tabs">
+      <div class="auth-tab active" data-mode="login">로그인</div>
+      <div class="auth-tab" data-mode="signup">회원가입</div>
+    </div>
+
+    <div class="field" id="auth-nickname-field" style="display:none;">
+      <label>닉네임</label>
+      <input type="text" id="auth-nickname" class="review-input" placeholder="닉네임을 입력해주세요" maxlength="20">
+    </div>
+    <div class="field">
+      <label>이메일</label>
+      <input type="email" id="auth-email" class="review-input" placeholder="example@email.com">
+    </div>
+    <div class="field">
+      <label>비밀번호</label>
+      <input type="password" id="auth-password" class="review-input" placeholder="6자 이상">
+    </div>
+    <button type="button" class="auth-submit-btn" id="auth-submit-btn">로그인하기</button>
+    <div class="auth-msg" id="auth-msg"></div>
+  </div>
+</div>
+
+<div class="page-loading" id="page-loading">처리 중...</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="firebase-init.js"></script>
+<script>
+  var pendingAction = null;
+  var authMode = 'login';
+
+  function openAuthModal(){ document.getElementById('auth-overlay').classList.add('show'); }
+  function closeAuthModal(){ document.getElementById('auth-overlay').classList.remove('show'); }
+  document.getElementById('auth-close').addEventListener('click', closeAuthModal);
+
+  document.querySelectorAll('.auth-tab').forEach(function(t){
+    t.addEventListener('click', function(){
+      document.querySelectorAll('.auth-tab').forEach(function(x){x.classList.remove('active');});
+      t.classList.add('active');
+      authMode = t.getAttribute('data-mode');
+      document.getElementById('auth-submit-btn').textContent = authMode === 'login' ? '로그인하기' : '회원가입하기';
+      document.getElementById('auth-nickname-field').style.display = authMode === 'signup' ? 'block' : 'none';
+      document.getElementById('auth-msg').textContent = '';
+    });
+  });
+
+  document.getElementById('google-login-btn').addEventListener('click', function(){
+    if(pendingAction === 'buy'){
+      sessionStorage.setItem('salesscript_pending_items', JSON.stringify(getSelectedItems()));
+    }
+    var provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithRedirect(provider).catch(function(err){
+      sessionStorage.removeItem('salesscript_pending_items');
+      document.getElementById('auth-msg').textContent = '구글 로그인에 실패했습니다: ' + err.message;
+    });
+  });
+
+  document.getElementById('auth-submit-btn').addEventListener('click', function(){
+    var email = document.getElementById('auth-email').value.trim();
+    var pw = document.getElementById('auth-password').value;
+    var nickname = document.getElementById('auth-nickname').value.trim();
+    var msgEl = document.getElementById('auth-msg');
+    if(!email || !pw){
+      msgEl.textContent = '이메일과 비밀번호를 입력해주세요.';
+      return;
+    }
+    if(authMode === 'signup' && !nickname){
+      msgEl.textContent = '닉네임을 입력해주세요.';
+      return;
+    }
+    if(authMode === 'login'){
+      auth.signInWithEmailAndPassword(email, pw).then(function(){
+        closeAuthModal();
+      }).catch(function(err){
+        msgEl.textContent = err.message;
+      });
+      return;
+    }
+    auth.createUserWithEmailAndPassword(email, pw).then(function(cred){
+      return cred.user.updateProfile({ displayName: nickname });
+    }).then(function(){
+      closeAuthModal();
+    }).catch(function(err){
+      msgEl.textContent = err.message;
+    });
+  });
+
+  // ---- 상품 선택 & 가격 계산 ----
+  function getSelectedItems(){
+    return Array.prototype.slice.call(document.querySelectorAll('.store-cb:checked'))
+      .map(function(cb){ return cb.value; }).sort();
+  }
+
+  function updatePriceDisplay(){
+    var items = getSelectedItems();
+    var sumEl = document.getElementById('price-sum');
+    var discountLine = document.getElementById('price-discount-line');
+    var discountEl = document.getElementById('price-discount');
+    var finalEl = document.getElementById('price-final');
+    var buyBtn = document.getElementById('buy-btn');
+    var stickyBtn = document.getElementById('sticky-buy-btn');
+
+    document.querySelectorAll('.store-item').forEach(function(item){
+      var cb = item.querySelector('.store-cb');
+      item.classList.toggle('checked', cb.checked);
+    });
+
+    if(items.length === 0){
+      sumEl.textContent = '0원';
+      discountLine.style.display = 'none';
+      finalEl.textContent = '0원';
+      buyBtn.disabled = true;
+      buyBtn.textContent = '상품을 선택해주세요';
+      stickyBtn.textContent = '상품을 선택해주세요';
+      return;
+    }
+    var sum = items.reduce(function(acc, id){ return acc + STANDALONE_PRICE[id]; }, 0);
+    var finalPrice = getBundlePrice(items);
+    sumEl.textContent = sum.toLocaleString() + '원';
+    finalEl.textContent = finalPrice.toLocaleString() + '원';
+    if(finalPrice < sum){
+      discountLine.style.display = 'flex';
+      discountEl.textContent = '-' + (sum - finalPrice).toLocaleString() + '원';
+    } else {
+      discountLine.style.display = 'none';
+    }
+    buyBtn.disabled = false;
+    var label = finalPrice.toLocaleString() + '원 구매하기';
+    buyBtn.textContent = label;
+    stickyBtn.textContent = label;
+  }
+  document.querySelectorAll('.store-cb').forEach(function(cb){
+    cb.addEventListener('change', updatePriceDisplay);
+  });
+  updatePriceDisplay();
+
+  // ---- 구매하기 ----
+  function handleBuyClick(){
+    var items = getSelectedItems();
+    if(items.length === 0){ return; }
+    var user = auth.currentUser;
+    if(!user){
+      pendingAction = 'buy';
+      openAuthModal();
+      return;
+    }
+    doPurchaseAndRedirect(user, items);
+  }
+  document.getElementById('buy-btn').addEventListener('click', handleBuyClick);
+  document.getElementById('sticky-buy-btn').addEventListener('click', handleBuyClick);
+
+  function doPurchaseAndRedirect(user, items){
+    document.getElementById('page-loading').classList.add('show');
+    ensureOrder(user, items).then(function(){
+      window.location.href = 'mypage.html';
+    }).catch(function(err){
+      document.getElementById('page-loading').classList.remove('show');
+      alert('처리 중 오류가 발생했습니다: ' + err.message);
+    });
+  }
+
+  auth.getRedirectResult().then(function(result){
+    var pendingItemsRaw = sessionStorage.getItem('salesscript_pending_items');
+    if(result && result.user && pendingItemsRaw){
+      sessionStorage.removeItem('salesscript_pending_items');
+      doPurchaseAndRedirect(result.user, JSON.parse(pendingItemsRaw));
+    }
+  }).catch(function(err){ console.error(err); });
+
+  auth.onAuthStateChanged(function(user){
+    if(user && pendingAction === 'buy'){
+      pendingAction = null;
+      doPurchaseAndRedirect(user, getSelectedItems());
+    }
+  });
+</script>
+
+</body>
+</html>
