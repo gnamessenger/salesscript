@@ -713,10 +713,16 @@ footer{
 .expand-row{
   margin-top:26px;
   display:flex;
-  flex-wrap:wrap;
+  flex-wrap:nowrap;
   gap:8px;
-  justify-content:center;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  padding:0 20px;
+  margin-left:-20px;
+  margin-right:-20px;
 }
+.expand-row::-webkit-scrollbar{display:none;}
 .expand-row span{
   background:var(--bg-soft);
   border:1px solid var(--border);
@@ -725,6 +731,8 @@ footer{
   font-size:13px;
   font-weight:600;
   color:#3a3f52;
+  white-space:nowrap;
+  flex-shrink:0;
 }
 
 .problem-list{margin-top:28px;display:flex;flex-direction:column;gap:12px;}
