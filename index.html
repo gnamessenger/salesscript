@@ -53,7 +53,7 @@
 
     <div class="field" id="auth-nickname-field" style="display:none;">
       <label>닉네임</label>
-      <input type="text" id="auth-nickname" class="review-input" placeholder="리뷰·마이페이지에 표시될 이름" maxlength="20">
+      <input type="text" id="auth-nickname" class="review-input" placeholder="닉네임을 입력해주세요" maxlength="20">
     </div>
     <div class="field">
       <label>이메일</label>
@@ -237,10 +237,10 @@
   });
 
   document.getElementById('google-login-btn').addEventListener('click', function(){
+    sessionStorage.setItem('chatbot_pending_purchase', '1');
     var provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider).then(function(){
-      closeAuthModal();
-    }).catch(function(err){
+    auth.signInWithRedirect(provider).catch(function(err){
+      sessionStorage.removeItem('chatbot_pending_purchase');
       document.getElementById('auth-msg').textContent = '구글 로그인에 실패했습니다: ' + err.message;
     });
   });
@@ -383,7 +383,17 @@
     openAuthModal();
   }
 
-  run();
+  auth.getRedirectResult().then(function(result){
+    if(result && result.user && sessionStorage.getItem('chatbot_pending_purchase') === '1'){
+      sessionStorage.removeItem('chatbot_pending_purchase');
+      doPurchaseAndRedirect(result.user);
+      return;
+    }
+    run();
+  }).catch(function(err){
+    console.error(err);
+    run();
+  });
 })();
 </script>
 
