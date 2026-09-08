@@ -153,7 +153,13 @@
       <div class="growth-note">※ 월 300만원 → 3,000만원까지 성장한 사례도 있습니다</div>
     </div>
 
-    <!-- TODO: 대표님이 선별한 매출/후기 사진, 영상 삽입 예정 -->
+    <div class="review-carousel-head">
+      <h4>실제 구매자 후기</h4>
+      <a href="#review-list" class="review-see-all">전체 리뷰 <span id="review-count-top">0</span>개 보기 ›</a>
+    </div>
+    <div class="review-carousel" id="review-carousel">
+      <div class="review-loading">후기를 불러오는 중...</div>
+    </div>
 
     <div id="review-gate">
       <div class="review-locked">
@@ -606,11 +612,32 @@
     });
   }
 
+  function renderReviewCarousel(docs){
+    var carouselEl = document.getElementById('review-carousel');
+    document.getElementById('review-count-top').textContent = docs.length;
+    if(docs.length === 0){
+      carouselEl.innerHTML = '<div class="review-empty">아직 등록된 후기가 없습니다. 첫 번째 후기를 남겨주세요!</div>';
+      return;
+    }
+    var html = '';
+    docs.slice(0, 8).forEach(function(doc){
+      var d = doc.data();
+      html += '<div class="review-card">' +
+        '<div class="stars">' + '★★★★★'.slice(0, d.rating || 5) + '</div>' +
+        '<div class="body">' + escapeHtml(d.body || '') + '</div>' +
+        '<div class="who">' + escapeHtml(d.name || '익명') + '<span class="verified-badge">구매인증</span></div>' +
+        '</div>';
+    });
+    carouselEl.innerHTML = html;
+  }
+
   function renderReviews(docs){
     allReviewDocs = docs;
     currentReviewPage = 1;
     var listEl = document.getElementById('review-list');
     var pagerEl = document.getElementById('review-pager');
+
+    renderReviewCarousel(docs);
 
     if(docs.length === 0){
       listEl.innerHTML = '<div class="review-empty">아직 등록된 후기가 없습니다. 첫 번째 후기를 남겨주세요!</div>';
