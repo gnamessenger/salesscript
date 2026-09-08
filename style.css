@@ -254,6 +254,22 @@ img,svg{max-width:100%;}
 }
 .bonus-box p{margin-top:6px;font-size:13.5px;color:#5b4d1f;}
 
+.fit-box{
+  margin-top:16px;
+  border-radius:12px;
+  padding:16px 18px;
+}
+.fit-box h4{font-size:14.5px;font-weight:800;}
+.fit-box ul{margin-top:10px;padding-left:18px;}
+.fit-box li{font-size:13.5px;line-height:1.7;}
+.fit-box.exclude{background:var(--bg-soft);border:1px solid var(--border);}
+.fit-box.exclude h4{color:#6b7280;}
+.fit-box.exclude li{color:#6b7280;}
+.fit-box.include{background:#eef4ff;border:1px solid #cddcf7;}
+.fit-box.include h4{color:var(--navy);}
+.fit-box.include li{color:var(--text);}
+.fit-box.include li::marker{color:var(--navy);}
+
 /* REVIEWS TAB */
 .review-panel{display:none;padding:20px 0 8px;}
 .review-panel.active{display:block;}
