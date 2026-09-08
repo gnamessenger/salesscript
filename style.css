@@ -89,6 +89,42 @@ img,svg{max-width:100%;}
 .book .k{font-size:9.5px;font-weight:700;color:var(--gold);letter-spacing:.3px;}
 .book .t{font-size:14px;font-weight:900;line-height:1.3;margin-top:6px;}
 
+.ebook-cover{
+  max-width:260px;
+  margin:28px auto 0;
+  aspect-ratio:3/4.3;
+  background:linear-gradient(160deg,var(--navy),var(--navy2));
+  border-radius:14px;
+  padding:28px 20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:#fff;
+  box-shadow:0 16px 40px rgba(20,33,61,.35);
+}
+.ebook-cover .ec-badge{
+  font-size:11px;
+  font-weight:800;
+  color:var(--gold);
+  letter-spacing:.3px;
+  background:rgba(245,196,81,.15);
+  padding:5px 12px;
+  border-radius:20px;
+}
+.ebook-cover .ec-title{font-size:22px;font-weight:900;line-height:1.35;margin-top:18px;}
+.ebook-cover .ec-sub{font-size:12px;font-weight:700;color:#c8ceE0;margin-top:10px;letter-spacing:3px;}
+.ebook-cover .ec-divider{width:36px;height:2px;background:var(--gold);margin-top:18px;}
+.ebook-cover .ec-tag{margin-top:16px;font-size:11.5px;color:#c8ceE0;line-height:1.6;}
+.ebook-list-title{
+  margin-top:28px;
+  font-size:16px;
+  font-weight:800;
+  color:var(--navy);
+  text-align:center;
+}
+
 /* TITLE / RATING */
 .title-section{padding:24px 0 0;}
 .title-section h1{
@@ -127,27 +163,6 @@ img,svg{max-width:100%;}
   border-bottom:2px solid var(--navy);
 }
 
-/* REVIEW BONUS BANNER */
-.review-bonus-banner{
-  margin-top:16px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:14px 18px;
-  border-radius:12px;
-  background:linear-gradient(90deg,#c22e46,var(--red));
-  color:#fff;
-  cursor:pointer;
-  box-shadow:0 4px 14px rgba(224,67,92,.25);
-}
-.review-bonus-banner .rb-icon{font-size:20px;}
-.review-bonus-banner .rb-text{flex:1;font-size:13.5px;line-height:1.5;}
-.review-bonus-banner .rb-text b{font-weight:900;}
-.review-bonus-banner .rb-arrow{font-size:12.5px;font-weight:700;white-space:nowrap;opacity:.9;}
-@media(max-width:480px){
-  .review-bonus-banner{flex-wrap:wrap;}
-  .review-bonus-banner .rb-arrow{margin-left:30px;}
-}
 
 /* DETAIL BODY */
 .detail-body{padding:24px 0 8px;}
