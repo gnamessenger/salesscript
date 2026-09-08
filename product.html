@@ -238,47 +238,12 @@
 <section class="price-section" id="buy">
   <div class="wrap">
     <div class="price-card">
-      <div class="pname">구매하실 상품을 선택하세요 (중복 선택 가능)</div>
-      <div class="price-note" style="margin:6px 0 0;">2개 이상 담으면 자동으로 묶음 할인이 적용됩니다.</div>
-
-      <div class="product-pick-list" id="product-pick-list">
-        <label class="product-pick-item">
-          <input type="checkbox" class="product-pick-cb" value="sales-script" checked>
-          <div class="ppi-info">
-            <span class="ppi-name">고가상품 세일즈 화법 완전정복</span>
-            <span class="ppi-desc">1차+2차 미팅 대본 + 마법의 반론 제기 보너스 (즉시 다운로드)</span>
-          </div>
-          <span class="ppi-price">79,000원</span>
-        </label>
-        <label class="product-pick-item">
-          <input type="checkbox" class="product-pick-cb" value="insurance-personal">
-          <div class="ppi-info">
-            <span class="ppi-name">보험 판매 화법 (개인) <span class="po-badge">준비중</span></span>
-            <span class="ppi-desc">완성되는 대로 마이페이지에서 바로 받아보실 수 있어요</span>
-          </div>
-          <span class="ppi-price">59,000원</span>
-        </label>
-        <label class="product-pick-item">
-          <input type="checkbox" class="product-pick-cb" value="insurance-corporate">
-          <div class="ppi-info">
-            <span class="ppi-name">보험 판매 화법 (법인) <span class="po-badge">준비중</span></span>
-            <span class="ppi-desc">완성되는 대로 마이페이지에서 바로 받아보실 수 있어요</span>
-          </div>
-          <span class="ppi-price">59,000원</span>
-        </label>
-      </div>
+      <div class="pname">고가상품 세일즈 화법 완전정복</div>
+      <div class="price-note" style="margin:6px 0 0;">1차+2차 미팅 대본 + 마법의 반론 제기 보너스 (즉시 다운로드)</div>
 
       <div class="price-lines">
-        <div class="price-line">
-          <span>선택 상품 정가 합계</span>
-          <span id="price-sum">79,000원</span>
-        </div>
-        <div class="price-line" id="price-discount-line" style="display:none;">
-          <span>묶음 할인</span>
-          <span class="discount" id="price-discount">-0원</span>
-        </div>
         <div class="price-line total">
-          <span>최종 구매 금액</span>
+          <span>구매 금액</span>
           <span id="price-final">79,000원</span>
         </div>
       </div>
@@ -288,8 +253,9 @@
         <span><a href="terms.html" target="_blank">서비스 이용약관</a> 및 <a href="privacy.html" target="_blank">개인정보처리방침</a>에 동의합니다. (다운로드형 콘텐츠 특성상 결제 후 환불이 제한됩니다)</span>
       </label>
 
-      <button type="button" id="buy-btn" class="buy-btn" disabled>선택 상품 구매하기</button>
+      <button type="button" id="buy-btn" class="buy-btn" disabled>79,000원 구매하기</button>
       <div class="price-note">※ 지금은 테스트 단계로, 실제 결제 없이 로그인만으로 구매 흐름을 체험하실 수 있습니다.</div>
+      <a href="store.html" class="store-cross-link">개인/법인 보험 화법도 궁금하다면? 전체 상품 보러가기 ›</a>
     </div>
   </div>
 </section>
@@ -487,49 +453,21 @@
     });
   });
 
-  // ---- 상품 선택 & 가격 계산 ----
+  // ---- 상품(단일) & 가격 표시 ----
   function getSelectedItems(){
-    return Array.prototype.slice.call(document.querySelectorAll('.product-pick-cb:checked'))
-      .map(function(cb){ return cb.value; }).sort();
+    return ['sales-script'];
   }
 
   function updatePriceDisplay(){
-    var items = getSelectedItems();
-    var sumEl = document.getElementById('price-sum');
-    var discountLine = document.getElementById('price-discount-line');
-    var discountEl = document.getElementById('price-discount');
-    var finalEl = document.getElementById('price-final');
+    var finalPrice = STANDALONE_PRICE['sales-script'];
     var buyBtn = document.getElementById('buy-btn');
     var stickyBtn = document.getElementById('sticky-buy-btn');
-
-    if(items.length === 0){
-      sumEl.textContent = '0원';
-      discountLine.style.display = 'none';
-      finalEl.textContent = '0원';
-      buyBtn.disabled = true;
-      buyBtn.textContent = '상품을 선택해주세요';
-      stickyBtn.textContent = '상품을 선택해주세요';
-      return;
-    }
-    var sum = items.reduce(function(acc, id){ return acc + STANDALONE_PRICE[id]; }, 0);
-    var finalPrice = getBundlePrice(items);
-    sumEl.textContent = sum.toLocaleString() + '원';
-    finalEl.textContent = finalPrice.toLocaleString() + '원';
-    if(finalPrice < sum){
-      discountLine.style.display = 'flex';
-      discountEl.textContent = '-' + (sum - finalPrice).toLocaleString() + '원';
-    } else {
-      discountLine.style.display = 'none';
-    }
-    buyBtn.disabled = !document.getElementById('terms-agree').checked;
     var label = finalPrice.toLocaleString() + '원 구매하기';
+    buyBtn.disabled = !document.getElementById('terms-agree').checked;
     buyBtn.textContent = label;
     stickyBtn.textContent = label;
   }
 
-  document.querySelectorAll('.product-pick-cb').forEach(function(cb){
-    cb.addEventListener('change', updatePriceDisplay);
-  });
   document.getElementById('terms-agree').addEventListener('change', updatePriceDisplay);
   updatePriceDisplay();
 
