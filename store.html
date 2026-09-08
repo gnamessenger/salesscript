@@ -88,7 +88,12 @@
         <span id="price-final">79,000원</span>
       </div>
     </div>
-    <button type="button" id="buy-btn" class="buy-btn">79,000원 구매하기</button>
+    <label class="policy">
+      <input type="checkbox" id="terms-agree">
+      <span><a href="terms.html" target="_blank">서비스 이용약관</a> 및 <a href="privacy.html" target="_blank">개인정보처리방침</a>에 동의합니다. (다운로드형 콘텐츠 특성상 결제 후 환불이 제한됩니다)</span>
+    </label>
+
+    <button type="button" id="buy-btn" class="buy-btn" disabled>79,000원 구매하기</button>
     <div class="price-note">※ 지금은 테스트 단계로, 실제 결제 없이 로그인만으로 구매 흐름을 체험하실 수 있습니다.</div>
   </div>
 </div>
@@ -281,7 +286,7 @@
     }
 
     finalEl.textContent = finalPrice.toLocaleString() + '원';
-    buyBtn.disabled = false;
+    buyBtn.disabled = !document.getElementById('terms-agree').checked;
     var label = finalPrice.toLocaleString() + '원 구매하기';
     buyBtn.textContent = label;
     stickyBtn.textContent = label;
@@ -290,6 +295,7 @@
     cb.addEventListener('change', updatePriceDisplay);
   });
   document.getElementById('coupon-check').addEventListener('change', updatePriceDisplay);
+  document.getElementById('terms-agree').addEventListener('change', updatePriceDisplay);
   updatePriceDisplay();
 
   function loadCouponFor(user){
@@ -307,6 +313,10 @@
   function handleBuyClick(){
     var items = getSelectedItems();
     if(items.length === 0){ return; }
+    if(!document.getElementById('terms-agree').checked){
+      alert('서비스 이용약관 및 개인정보처리방침에 동의해주세요.');
+      return;
+    }
     var user = auth.currentUser;
     if(!user){
       pendingAction = 'buy';
