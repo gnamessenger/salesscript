@@ -315,6 +315,7 @@ img,svg{max-width:100%;}
   width:64px;
   height:64px;
   border-radius:50%;
+  object-fit:cover;
   background:var(--navy);
   color:#fff;
   font-size:22px;
