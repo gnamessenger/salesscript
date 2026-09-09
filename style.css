@@ -38,7 +38,6 @@ img,svg{max-width:100%;}
   color:#fff;font-weight:800;font-size:14px;
 }
 .seller-bar .name{font-weight:700;font-size:15px;color:var(--navy);}
-.back-arrow{font-size:18px;color:var(--text);text-decoration:none;font-weight:700;margin-right:2px;}
 
 /* COVER CARD */
 .cover-section{padding:28px 0 0;}
