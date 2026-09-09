@@ -338,6 +338,8 @@ img,svg{max-width:100%;}
 .profile-certs{margin-top:14px;}
 .profile-certs ul{padding-left:18px;}
 .profile-certs li{font-size:12.5px;line-height:1.7;color:#3a3f52;text-align:left;}
+.cert-proof-row{display:flex;gap:10px;margin-top:12px;}
+.cert-proof-row .cert-proof-link{flex:1;max-width:none;margin-top:0;}
 .cert-proof-link{display:block;max-width:220px;margin-top:12px;border-radius:8px;overflow:hidden;border:1px solid var(--border);}
 .cert-proof-img{display:block;width:100%;}
 .cert-proof-note{margin-top:6px;font-size:11px;color:var(--text-dim);text-align:left;}
