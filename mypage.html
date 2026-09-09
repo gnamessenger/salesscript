@@ -55,6 +55,7 @@
   </div>
 
   <div id="tab-store" style="display:none;">
+    <div id="coupon-banner"></div>
     <div class="order-card">
       <div class="pname">더 필요한 자료가 있으신가요?</div>
       <div class="meta">아우라세일즈의 모든 자료를 한 곳에서 보고, 지금 갖고 계신 것과 묶어서 구매하시면 할인이 적용됩니다.</div>
@@ -204,6 +205,15 @@
         document.getElementById('orders-list').innerHTML = '<div class="empty-state">구매내역을 불러오지 못했습니다.</div>';
         document.getElementById('content-list').innerHTML = '<div class="empty-state">컨텐츠를 불러오지 못했습니다.</div>';
       });
+
+    getAvailableCoupon(user.uid).then(function(coupon){
+      var bannerEl = document.getElementById('coupon-banner');
+      if(!coupon){ bannerEl.innerHTML = ''; return; }
+      bannerEl.innerHTML =
+        '<div class="coupon-box" style="margin-bottom:16px;">' +
+        '🎟️ ' + coupon.amount.toLocaleString() + '원 쿠폰 보유중 (' + coupon.minAmount.toLocaleString() + '원 이상 구매 시 스토어에서 자동 적용)' +
+        '</div>';
+    }).catch(function(err){ console.error(err); });
   });
 </script>
 
