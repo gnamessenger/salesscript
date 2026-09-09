@@ -335,6 +335,8 @@ img,svg{max-width:100%;}
 .profile-stats .num{font-size:15px;font-weight:800;color:var(--navy);}
 .profile-stats .label{margin-top:3px;font-size:10.5px;color:var(--text-dim);line-height:1.3;}
 .profile-certs{margin-top:14px;}
+.profile-certs ul{padding-left:18px;}
+.profile-certs li{font-size:12.5px;line-height:1.7;color:#3a3f52;text-align:left;}
 .cert-placeholder{font-size:12.5px;color:var(--text-dim);font-style:italic;}
 @media(max-width:420px){
   .profile-card{flex-direction:column;align-items:center;text-align:center;}
