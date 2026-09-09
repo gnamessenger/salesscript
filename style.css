@@ -294,8 +294,8 @@ img,svg{max-width:100%;}
   border-radius:12px;
   padding:16px 18px;
 }
-.memo-title{font-size:14.5px;font-weight:800;color:var(--navy);}
-.memo-item{margin-top:10px;font-size:13px;line-height:1.6;color:#3a3f52;}
+.memo-title{font-size:14.5px;font-weight:800;color:var(--navy);text-align:left;}
+.memo-item{margin-top:10px;font-size:13px;line-height:1.6;color:#3a3f52;text-align:left;}
 .memo-item b{color:var(--text);}
 .memo-box.notice{background:#fff7e6;border-color:#f0d59a;}
 .memo-box.notice .memo-title{color:#8a6d1a;}
