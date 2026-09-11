@@ -440,12 +440,14 @@
   });
 
   document.getElementById('google-login-btn').addEventListener('click', function(){
-    if(pendingAction === 'buy'){
-      sessionStorage.setItem('salesscript_pending_items', JSON.stringify(getSelectedItems()));
-    }
     var provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithRedirect(provider).catch(function(err){
-      sessionStorage.removeItem('salesscript_pending_items');
+    auth.signInWithPopup(provider).then(function(result){
+      closeAuthModal();
+      if(pendingAction === 'buy'){
+        pendingAction = null;
+        doPurchaseAndRedirect(result.user, getSelectedItems());
+      }
+    }).catch(function(err){
       document.getElementById('auth-msg').textContent = '구글 로그인에 실패했습니다: ' + err.message;
     });
   });
@@ -545,15 +547,6 @@
       alert('처리 중 오류가 발생했습니다: ' + err.message);
     });
   }
-
-  // ---- 구글 로그인 리다이렉트 복귀 시 대기 중이던 구매 이어가기 ----
-  auth.getRedirectResult().then(function(result){
-    var pendingItemsRaw = sessionStorage.getItem('salesscript_pending_items');
-    if(result && result.user && pendingItemsRaw){
-      sessionStorage.removeItem('salesscript_pending_items');
-      doPurchaseAndRedirect(result.user, JSON.parse(pendingItemsRaw));
-    }
-  }).catch(function(err){ console.error(err); });
 
   // ---- 로그인 상태에 따른 리뷰 작성 권한 ----
   var currentUserHasPurchased = false;
