@@ -171,6 +171,7 @@
 <script src="firebase-init.js"></script>
 <script>
   var pendingAction = null;
+  var authResolved = false; // 로그인 상태 확인(onAuthStateChanged 최초 응답) 완료 여부
   var authMode = 'login';
 
   function openAuthModal(){ document.getElementById('auth-overlay').classList.add('show'); }
@@ -336,6 +337,11 @@
       alert('서비스 이용약관 및 개인정보처리방침에 동의해주세요.');
       return;
     }
+    if(!authResolved){
+      pendingAction = 'buy';
+      document.getElementById('page-loading').classList.add('show');
+      return;
+    }
     var user = auth.currentUser;
     if(!user){
       pendingAction = 'buy';
@@ -366,7 +372,14 @@
   }).catch(function(err){ console.error(err); });
 
   auth.onAuthStateChanged(function(user){
-    if(!user){ return; }
+    authResolved = true;
+    if(!user){
+      if(pendingAction === 'buy'){
+        document.getElementById('page-loading').classList.remove('show');
+        openAuthModal();
+      }
+      return;
+    }
     loadCouponFor(user);
     if(pendingAction === 'buy'){
       pendingAction = null;

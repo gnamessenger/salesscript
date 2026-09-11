@@ -415,6 +415,7 @@
 <script>
   var reviewsRef = db.collection('reviews');
   var pendingAction = null; // 'buy' | 'review'
+  var authResolved = false; // 로그인 상태 확인(onAuthStateChanged 최초 응답) 완료 여부
   var authMode = 'login';
 
   // ---- Auth modal open/close ----
@@ -514,6 +515,11 @@
       alert('서비스 이용약관 및 개인정보처리방침에 동의해주세요.');
       return;
     }
+    if(!authResolved){
+      pendingAction = 'buy';
+      document.getElementById('page-loading').classList.add('show');
+      return;
+    }
     var user = auth.currentUser;
     if(!user){
       pendingAction = 'buy';
@@ -553,9 +559,14 @@
   var currentUserHasPurchased = false;
 
   auth.onAuthStateChanged(function(user){
+    authResolved = true;
     if(!user){
       document.getElementById('review-gate').style.display = 'block';
       document.getElementById('review-write').style.display = 'none';
+      if(pendingAction === 'buy'){
+        document.getElementById('page-loading').classList.remove('show');
+        openAuthModal();
+      }
       return;
     }
     if(pendingAction === 'buy'){
