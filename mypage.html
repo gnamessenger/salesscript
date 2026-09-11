@@ -68,13 +68,13 @@
 <div class="auth-overlay" id="phone-overlay">
   <div class="auth-modal">
     <div class="auth-close" id="phone-close">✕</div>
-    <h3>연락처를 남겨주세요</h3>
-    <p class="sub">무료 특강 등 유용한 소식을 가장 먼저 알려드릴게요</p>
+    <h3>연락처를 남겨주셔야 자료를 받으실 수 있어요</h3>
+    <p class="sub">무료 특강 등 유용한 소식도 가장 먼저 알려드릴게요</p>
     <div class="field">
       <label>휴대폰 번호</label>
       <input type="tel" id="phone-input" class="review-input" placeholder="010-1234-5678">
     </div>
-    <button type="button" class="auth-submit-btn" id="phone-submit-btn">저장하고 계속하기</button>
+    <button type="button" class="auth-submit-btn" id="phone-submit-btn">저장하고 자료 받기</button>
     <div class="auth-msg" id="phone-msg"></div>
   </div>
 </div>
@@ -128,8 +128,11 @@
     }
   };
   var PRODUCT_ORDER = ['sales', 'personal', 'corporate'];
+  var userHasPhone = false;
+  var lastOrderDocs = null;
 
   function renderOrders(docs){
+    lastOrderDocs = docs;
     var ordersEl = document.getElementById('orders-list');
     var contentEl = document.getElementById('content-list');
 
@@ -179,8 +182,10 @@
       contentHtml += '<div class="order-card">' +
         '<div class="pname">' + info.name + '</div>' +
         '<div class="meta">기간 제한 없음</div>';
-      if(info.download){
+      if(info.download && userHasPhone){
         contentHtml += '<a href="' + info.download + '" download class="download-btn">' + info.downloadLabel + '</a>';
+      } else if(info.download && !userHasPhone){
+        contentHtml += '<button type="button" class="download-btn" onclick="document.getElementById(\'phone-overlay\').classList.add(\'show\')">📱 연락처 남기고 자료 받기</button>';
       } else {
         contentHtml += '<div class="meta" style="margin-top:10px;color:var(--red);font-weight:700;">자료 준비 중입니다.</div>';
       }
@@ -211,15 +216,16 @@
     document.getElementById('info-email').textContent = '이메일: ' + user.email;
     document.getElementById('logout-btn').style.display = 'inline-block';
 
-    db.collection('orders').where('uid', '==', user.uid).orderBy('createdAt', 'desc').get()
-      .then(function(snap){
-        renderOrders(snap.docs);
-      })
-      .catch(function(err){
-        console.error(err);
-        document.getElementById('orders-list').innerHTML = '<div class="empty-state">구매내역을 불러오지 못했습니다.</div>';
-        document.getElementById('content-list').innerHTML = '<div class="empty-state">컨텐츠를 불러오지 못했습니다.</div>';
-      });
+    getUserProfile(user.uid).then(function(profile){
+      userHasPhone = !!(profile && profile.phone);
+      return db.collection('orders').where('uid', '==', user.uid).orderBy('createdAt', 'desc').get();
+    }).then(function(snap){
+      renderOrders(snap.docs);
+    }).catch(function(err){
+      console.error(err);
+      document.getElementById('orders-list').innerHTML = '<div class="empty-state">구매내역을 불러오지 못했습니다.</div>';
+      document.getElementById('content-list').innerHTML = '<div class="empty-state">컨텐츠를 불러오지 못했습니다.</div>';
+    });
 
     getAvailableCoupon(user.uid).then(function(coupon){
       var bannerEl = document.getElementById('coupon-banner');
@@ -229,8 +235,6 @@
         '🎟️ ' + coupon.amount.toLocaleString() + '원 쿠폰 보유중 (' + coupon.minAmount.toLocaleString() + '원 이상 구매 시 스토어에서 자동 적용)' +
         '</div>';
     }).catch(function(err){ console.error(err); });
-
-    ensurePhoneNumber(user);
   });
 
   document.getElementById('phone-close').addEventListener('click', function(){
@@ -246,7 +250,9 @@
     var user = auth.currentUser;
     if(!user) return;
     savePhoneNumber(user, phone).then(function(){
+      userHasPhone = true;
       document.getElementById('phone-overlay').classList.remove('show');
+      if(lastOrderDocs){ renderOrders(lastOrderDocs); }
     }).catch(function(err){
       msgEl.textContent = err.message;
     });

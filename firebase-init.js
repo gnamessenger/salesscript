@@ -150,13 +150,3 @@ function savePhoneNumber(user, phone){
     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
   }, { merge: true });
 }
-
-// 로그인 후 연락처가 없으면 입력 팝업을 띄움 (product.html/store.html/mypage.html 공용)
-function ensurePhoneNumber(user){
-  var overlay = document.getElementById('phone-overlay');
-  if(!overlay) return;
-  getUserProfile(user.uid).then(function(profile){
-    if(profile && profile.phone){ return; }
-    overlay.classList.add('show');
-  });
-}
