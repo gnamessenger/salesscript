@@ -554,7 +554,18 @@ img,svg{max-width:100%;}
 .store-hero h1{font-size:24px;font-weight:900;line-height:1.4;}
 .store-hero .sub{margin-top:14px;font-size:13.5px;color:#c8c8d0;line-height:1.7;}
 
-.store-list{margin-top:24px;display:flex;flex-direction:column;gap:14px;}
+.store-cat-title{margin-top:28px;font-size:16px;font-weight:800;color:var(--text);}
+.free-list{margin-top:16px;}
+.store-empty{
+  background:var(--bg-soft);
+  border:1px dashed var(--border);
+  border-radius:14px;
+  padding:22px;
+  text-align:center;
+  font-size:13px;
+  color:var(--text-dim);
+}
+.store-list{margin-top:16px;display:flex;flex-direction:column;gap:14px;}
 .store-item{
   display:block;
   border:1px solid var(--border);

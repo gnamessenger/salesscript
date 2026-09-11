@@ -133,3 +133,30 @@ function saveLead(data){
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   });
 }
+
+// 유저 프로필(연락처 등) 조회/저장 - 무료특강 등 안내 발송용 연락처 확보
+function getUserProfile(uid){
+  return db.collection('users').doc(uid).get().then(function(doc){
+    return doc.exists ? doc.data() : null;
+  });
+}
+
+function savePhoneNumber(user, phone){
+  return db.collection('users').doc(user.uid).set({
+    uid: user.uid,
+    name: user.displayName || '',
+    email: user.email || '',
+    phone: phone,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  }, { merge: true });
+}
+
+// 로그인 후 연락처가 없으면 입력 팝업을 띄움 (product.html/store.html/mypage.html 공용)
+function ensurePhoneNumber(user){
+  var overlay = document.getElementById('phone-overlay');
+  if(!overlay) return;
+  getUserProfile(user.uid).then(function(profile){
+    if(profile && profile.phone){ return; }
+    overlay.classList.add('show');
+  });
+}

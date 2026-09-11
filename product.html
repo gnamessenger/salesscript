@@ -337,6 +337,21 @@
 
 <div class="page-loading" id="page-loading">처리 중...</div>
 
+<!-- PHONE CAPTURE MODAL -->
+<div class="auth-overlay" id="phone-overlay">
+  <div class="auth-modal">
+    <div class="auth-close" id="phone-close">✕</div>
+    <h3>연락처를 남겨주세요</h3>
+    <p class="sub">무료 특강 등 유용한 소식을 가장 먼저 알려드릴게요</p>
+    <div class="field">
+      <label>휴대폰 번호</label>
+      <input type="tel" id="phone-input" class="review-input" placeholder="010-1234-5678">
+    </div>
+    <button type="button" class="auth-submit-btn" id="phone-submit-btn">저장하고 계속하기</button>
+    <div class="auth-msg" id="phone-msg"></div>
+  </div>
+</div>
+
 <!-- BONUS POPUP -->
 <div class="auth-overlay" id="bonus-overlay">
   <div class="auth-modal bonus-modal">
@@ -419,6 +434,25 @@
   document.getElementById('auth-close').addEventListener('click', closeAuthModal);
   document.getElementById('bonus-close').addEventListener('click', function(){
     document.getElementById('bonus-overlay').classList.remove('show');
+  });
+
+  document.getElementById('phone-close').addEventListener('click', function(){
+    document.getElementById('phone-overlay').classList.remove('show');
+  });
+  document.getElementById('phone-submit-btn').addEventListener('click', function(){
+    var phone = document.getElementById('phone-input').value.trim();
+    var msgEl = document.getElementById('phone-msg');
+    if(!/^01[0-9]-?\d{3,4}-?\d{4}$/.test(phone)){
+      msgEl.textContent = '올바른 휴대폰 번호를 입력해주세요. (예: 010-1234-5678)';
+      return;
+    }
+    var user = auth.currentUser;
+    if(!user) return;
+    savePhoneNumber(user, phone).then(function(){
+      document.getElementById('phone-overlay').classList.remove('show');
+    }).catch(function(err){
+      msgEl.textContent = err.message;
+    });
   });
 
   document.querySelectorAll('.auth-tab').forEach(function(t){
@@ -550,6 +584,7 @@
       doPurchaseAndRedirect(user, getSelectedItems());
       return;
     }
+    ensurePhoneNumber(user);
     if(user.displayName && !document.getElementById('review-name').value){
       document.getElementById('review-name').value = user.displayName;
     }
