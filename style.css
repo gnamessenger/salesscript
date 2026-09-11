@@ -551,6 +551,7 @@ img,svg{max-width:100%;}
   padding:44px 0 40px;
   text-align:center;
 }
+.store-hero .eyebrow{color:var(--gold);font-size:13px;font-weight:800;letter-spacing:0.2px;margin-bottom:10px;}
 .store-hero h1{font-size:24px;font-weight:900;line-height:1.4;}
 .store-hero .sub{margin-top:14px;font-size:13.5px;color:#c8c8d0;line-height:1.7;}
 
