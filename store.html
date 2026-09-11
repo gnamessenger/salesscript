@@ -142,8 +142,8 @@
     </div>
 
     <div class="field" id="auth-nickname-field" style="display:none;">
-      <label>닉네임</label>
-      <input type="text" id="auth-nickname" class="review-input" placeholder="닉네임을 입력해주세요" maxlength="20">
+      <label>이름</label>
+      <input type="text" id="auth-nickname" class="review-input" placeholder="이름을 입력해주세요" maxlength="20">
     </div>
     <div class="field" id="auth-phone-field" style="display:none;">
       <label>휴대폰 번호</label>
@@ -211,7 +211,7 @@
       return;
     }
     if(authMode === 'signup' && !nickname){
-      msgEl.textContent = '닉네임을 입력해주세요.';
+      msgEl.textContent = '이름을 입력해주세요.';
       return;
     }
     if(authMode === 'signup' && !/^01[0-9]-?\d{3,4}-?\d{4}$/.test(phone)){
