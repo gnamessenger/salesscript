@@ -218,7 +218,10 @@
       googleTokenClient = google.accounts.oauth2.initTokenClient({
         client_id: GOOGLE_CLIENT_ID,
         scope: 'openid email profile',
-        callback: handleGoogleTokenResponse
+        callback: handleGoogleTokenResponse,
+        error_callback: function(err){
+          document.getElementById('auth-msg').textContent = '구글 로그인 창을 열지 못했습니다 (' + (err && err.type ? err.type : '알 수 없는 오류') + '). 팝업 차단을 해제하거나 이메일로 로그인해주세요.';
+        }
       });
     }
     googleTokenClient.requestAccessToken();
