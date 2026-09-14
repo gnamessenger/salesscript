@@ -448,9 +448,29 @@
         doPurchaseAndRedirect(result.user, getSelectedItems());
       }
     }).catch(function(err){
+      // 팝업이 브라우저에 의해 차단된 경우 리다이렉트 방식으로 대체
+      if(err.code === 'auth/popup-blocked' || err.code === 'auth/operation-not-supported-in-this-environment'){
+        if(pendingAction === 'buy'){
+          sessionStorage.setItem('salesscript_pending_items', JSON.stringify(getSelectedItems()));
+        }
+        auth.signInWithRedirect(provider).catch(function(err2){
+          sessionStorage.removeItem('salesscript_pending_items');
+          document.getElementById('auth-msg').textContent = '구글 로그인에 실패했습니다: ' + err2.message;
+        });
+        return;
+      }
       document.getElementById('auth-msg').textContent = '구글 로그인에 실패했습니다: ' + err.message;
     });
   });
+
+  // ---- 팝업이 막혀 리다이렉트로 대체된 경우, 복귀 시 대기 중이던 구매 이어가기 ----
+  auth.getRedirectResult().then(function(result){
+    var pendingItemsRaw = sessionStorage.getItem('salesscript_pending_items');
+    if(result && result.user && pendingItemsRaw){
+      sessionStorage.removeItem('salesscript_pending_items');
+      doPurchaseAndRedirect(result.user, JSON.parse(pendingItemsRaw));
+    }
+  }).catch(function(err){ console.error(err); });
 
   document.getElementById('auth-submit-btn').addEventListener('click', function(){
     var email = document.getElementById('auth-email').value.trim();
