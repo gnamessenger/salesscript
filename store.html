@@ -169,6 +169,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <script src="firebase-init.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
   var pendingAction = null;
   var authResolved = false; // 로그인 상태 확인(onAuthStateChanged 최초 응답) 완료 여부
@@ -190,38 +191,38 @@
     });
   });
 
-  document.getElementById('google-login-btn').addEventListener('click', function(){
-    var provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider).then(function(result){
+  // ---- 구글 로그인 (Google Identity Services 토큰을 받아 Firebase에 직접 전달) ----
+  var googleTokenClient = null;
+  function handleGoogleTokenResponse(tokenResponse){
+    if(tokenResponse.error){
+      document.getElementById('auth-msg').textContent = '구글 로그인에 실패했습니다: ' + tokenResponse.error;
+      return;
+    }
+    var credential = firebase.auth.GoogleAuthProvider.credential(null, tokenResponse.access_token);
+    auth.signInWithCredential(credential).then(function(result){
       closeAuthModal();
       if(pendingAction === 'buy'){
         pendingAction = null;
         doPurchaseAndRedirect(result.user, getSelectedItems());
       }
     }).catch(function(err){
-      // 팝업이 브라우저에 의해 차단된 경우 리다이렉트 방식으로 대체
-      if(err.code === 'auth/popup-blocked' || err.code === 'auth/operation-not-supported-in-this-environment'){
-        if(pendingAction === 'buy'){
-          sessionStorage.setItem('salesscript_pending_items', JSON.stringify(getSelectedItems()));
-        }
-        auth.signInWithRedirect(provider).catch(function(err2){
-          sessionStorage.removeItem('salesscript_pending_items');
-          document.getElementById('auth-msg').textContent = '구글 로그인에 실패했습니다: ' + err2.message;
-        });
-        return;
-      }
       document.getElementById('auth-msg').textContent = '구글 로그인에 실패했습니다: ' + err.message;
     });
-  });
-
-  // ---- 팝업이 막혀 리다이렉트로 대체된 경우, 복귀 시 대기 중이던 구매 이어가기 ----
-  auth.getRedirectResult().then(function(result){
-    var pendingItemsRaw = sessionStorage.getItem('salesscript_pending_items');
-    if(result && result.user && pendingItemsRaw){
-      sessionStorage.removeItem('salesscript_pending_items');
-      doPurchaseAndRedirect(result.user, JSON.parse(pendingItemsRaw));
+  }
+  document.getElementById('google-login-btn').addEventListener('click', function(){
+    if(typeof google === 'undefined' || !google.accounts || !google.accounts.oauth2){
+      document.getElementById('auth-msg').textContent = '구글 로그인을 불러오지 못했습니다. 이메일로 로그인해주세요.';
+      return;
     }
-  }).catch(function(err){ console.error(err); });
+    if(!googleTokenClient){
+      googleTokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: GOOGLE_CLIENT_ID,
+        scope: 'openid email profile',
+        callback: handleGoogleTokenResponse
+      });
+    }
+    googleTokenClient.requestAccessToken();
+  });
 
   document.getElementById('auth-submit-btn').addEventListener('click', function(){
     var email = document.getElementById('auth-email').value.trim();
