@@ -10,12 +10,6 @@ firebase.initializeApp(firebaseConfig);
 var auth = firebase.auth();
 var db = firebase.firestore();
 
-// Google Identity Services(GIS) OAuth 클라이언트 ID - 구글 로그인용
-// Firebase의 signInWithPopup/signInWithRedirect는 authDomain(firebaseapp.com)이 실제 사이트 도메인과 달라
-// 브라우저의 서드파티 스토리지 제한에 걸려 로그인 세션이 이어지지 않는 문제가 있어, GIS 토큰을 직접 받아
-// signInWithCredential로 넘기는 방식을 사용한다 (product.html/store.html 공용).
-var GOOGLE_CLIENT_ID = '91082261854-g8nrf8ub5mio1h7omauc0ei03fhej7j9.apps.googleusercontent.com';
-
 var PRODUCT_LABEL = {
   'sales-script': '[대본집] 고가상품 세일즈 화법 완전정복',
   'insurance-personal': '보험 판매 화법 (개인)',

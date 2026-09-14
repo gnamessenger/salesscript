@@ -129,13 +129,6 @@
     <h3>로그인하고 계속하기</h3>
     <p class="sub">구매 처리를 위해 로그인이 필요합니다</p>
 
-    <button type="button" class="google-btn" id="google-login-btn">
-      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.4 29.3 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.3 1 7.3 2.7l6-6C33.5 6.5 29 4.5 24 4.5 13.2 4.5 4.5 13.2 4.5 24S13.2 43.5 24 43.5 43.5 34.8 43.5 24c0-1.2-.1-2.4-.3-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 16 19 13 24 13c2.8 0 5.3 1 7.3 2.7l6-6C33.5 6.5 29 4.5 24 4.5c-7.6 0-14.1 4.3-17.4 10.6z"/><path fill="#4CAF50" d="M24 43.5c5.2 0 9.9-1.7 13.5-4.8l-6.2-5.3C29.3 35 26.8 36 24 36c-5.2 0-9.6-2.6-11.3-7l-6.6 5.1C9.8 39 16.4 43.5 24 43.5z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.5l6.2 5.3C40.5 36.5 43.5 30.7 43.5 24c0-1.2-.1-2.4-.3-3.5z"/></svg>
-      Google로 계속하기
-    </button>
-
-    <div class="auth-divider">또는 이메일로</div>
-
     <div class="auth-tabs">
       <div class="auth-tab active" data-mode="login">로그인</div>
       <div class="auth-tab" data-mode="signup">회원가입</div>
@@ -169,7 +162,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <script src="firebase-init.js"></script>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
   var pendingAction = null;
   var authResolved = false; // 로그인 상태 확인(onAuthStateChanged 최초 응답) 완료 여부
@@ -189,42 +181,6 @@
       document.getElementById('auth-phone-field').style.display = authMode === 'signup' ? 'block' : 'none';
       document.getElementById('auth-msg').textContent = '';
     });
-  });
-
-  // ---- 구글 로그인 (Google Identity Services 토큰을 받아 Firebase에 직접 전달) ----
-  var googleTokenClient = null;
-  function handleGoogleTokenResponse(tokenResponse){
-    if(tokenResponse.error){
-      document.getElementById('auth-msg').textContent = '구글 로그인에 실패했습니다: ' + tokenResponse.error;
-      return;
-    }
-    var credential = firebase.auth.GoogleAuthProvider.credential(null, tokenResponse.access_token);
-    auth.signInWithCredential(credential).then(function(result){
-      closeAuthModal();
-      if(pendingAction === 'buy'){
-        pendingAction = null;
-        doPurchaseAndRedirect(result.user, getSelectedItems());
-      }
-    }).catch(function(err){
-      document.getElementById('auth-msg').textContent = '구글 로그인에 실패했습니다: ' + err.message;
-    });
-  }
-  document.getElementById('google-login-btn').addEventListener('click', function(){
-    if(typeof google === 'undefined' || !google.accounts || !google.accounts.oauth2){
-      document.getElementById('auth-msg').textContent = '구글 로그인을 불러오지 못했습니다. 이메일로 로그인해주세요.';
-      return;
-    }
-    if(!googleTokenClient){
-      googleTokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: GOOGLE_CLIENT_ID,
-        scope: 'openid email profile',
-        callback: handleGoogleTokenResponse,
-        error_callback: function(err){
-          document.getElementById('auth-msg').textContent = '구글 로그인 창을 열지 못했습니다 (' + (err && err.type ? err.type : '알 수 없는 오류') + '). 팝업 차단을 해제하거나 이메일로 로그인해주세요.';
-        }
-      });
-    }
-    googleTokenClient.requestAccessToken();
   });
 
   document.getElementById('auth-submit-btn').addEventListener('click', function(){
